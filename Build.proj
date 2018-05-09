@@ -18,7 +18,7 @@
     </Target>
 
     <Target Name="Build">
-        <MSBuild Projects="$(SolutionRoot)\REST Messaging Projects.sln" Targets="Build" />
+        <MSBuild Projects="$(SolutionRoot)\Direct-Messaging-SDK.sln" Targets="Build" />
     </Target>
 
 </Project>
