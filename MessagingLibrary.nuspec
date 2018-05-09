@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>DMWeb.Direct.NET.Messaging</id>
+    <version>version-num</version>
+    <title>DMWeb - Direct - .NET - Messaging</title>
+    <authors>author-name</authors>
+    <owners>author-name</owners>
+    <licenseUrl>https://support.datamotion.com/LICENSE.txt</licenseUrl>
+    <projectUrl>https://gitlab.com/DataMotion/DMWeb/Direct/CSharp/Messaging/Rest/Library</projectUrl>
+    <iconUrl>https://support.datamotion.com/icon.png</iconUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>This is a .NET Software Development Kit (SDK) for DataMotion Direct Messaging. This SDK is a wrapper providing helper functions for our Messaging RESTful APIs. This code is simple in nature, and is present to provide a complete yet basic implementation.</description>
+    <releaseNotes>Initial Upload!</releaseNotes>
+    <copyright>copyright-date</copyright>
+    <tags>datamotion data motion secure mail securemail direct phi ihe ehr hipaa ehnac soap rest restful administration account company provisioning messaging email</tags>
+  </metadata>
+  <files>
+    <file src="lib/net452/Messaging Library.dll" target="lib/net452" />
+	<file src="lib/net35/Messaging Library.dll" target="lib/net35" />
+  </files>
+</package>
