@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="BeforeBuild;Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <PropertyGroup>
+        <Configuration>$(Configuration)|$(Platform)</Configuration>
+        <SolutionRoot>$(MSBuildProjectDirectory)</SolutionRoot>
+        <MSBuildCommunityTasksPath>.</MSBuildCommunityTasksPath>
+    </PropertyGroup>
+    <Import Project="Build.tasks" />
+ 
+    <Target Name="BeforeBuild">
+        <Message Text="Modifying CommonAssemblyInfo.cs file under $(SolutionRoot) to $(build_number)" /> 
+        <RegexTransform 
+            InputFilename="CommonAssemblyInfo.cs" 
+            OutputFilename="CommonAssemblyInfo.cs" 
+            MatchExpression="(1.2.3.4)" 
+            ReplacementText="$(build_number)" />
+        <Message Text="CommonAssemblyInfo.cs file updated to version $(build_number)" />
+    </Target>
+
+    <Target Name="Build">
+        <MSBuild Projects="$(SolutionRoot)\REST Messaging Projects.sln" Targets="Build" />
+    </Target>
+
+</Project>
