@@ -1,0 +1,67 @@
+image: cly0896/dm-mono-nunit
+
+before_script:
+  - nuget restore -NonInteractive
+  - mapfile BuildConfiguration < BUILD
+
+stages:
+  - build
+  - test
+  - deploy
+
+build:
+  stage: build
+  script:
+    #Build DLLs
+    - echo "BuildNum:${BuildConfiguration[0]}"
+    #Build DLLs in Release mode
+    - msbuild Build.proj /p:Configuration=Release /p:Platform="Any CPU" /p:build_number=${BuildConfiguration[0]}
+    #Debug
+    - ls "Direct-Messaging-SDK-3.5/bin/Release/"
+    - ls "Direct-Messaging-SDK-4.6.1/bin/Release/"
+  artifacts:
+    paths:
+      - "Direct-Messaging-SDK-3.5/bin/Release/"
+      - "Direct-Messaging-SDK-4.6.1/bin/Release/"
+      - "Direct-Messaging-SDK-3.5 Unit Tests/bin/Release/"
+      - "Direct-Messaging-SDK-4.6.1 Unit Tests/bin/Release/"
+     
+test:
+  stage: test
+  script:
+    #Write Config File from Environment Variables
+    - echo "UserIdOrEmail:"$UserIdOrEmail > "Unit Test Documents/Test Documents/MessageData.txt"
+    - echo "Password:"$Password >> "Unit Test Documents/MessageData.txt"
+    - echo "ToAddress:"$ToAddress >> "Unit Test Documents/MessageData.txt"
+    - echo "FromAddress:"$FromAddress >> "Unit Test Documents/MessageData.txt"
+    #Change directory and run unit tests
+    #Debug
+    - ls "Direct-Messaging-SDK-3.5 Unit Tests/bin/Release"
+    - ls "Direct-Messaging-SDK-4.6.1 Unit Tests/bin/Release"
+    - nunit "Direct-Messaging-SDK-3.5 Unit Tests/bin/Release/Consolidated Unit Tests.dll" --result 35Result.xml
+    - nunit "Direct-Messaging-SDK-4.6.1 Unit Tests/bin/Release/Consolidated Unit Tests-3.5.dll" --result 461Result.xml
+  artifacts:
+    paths:
+      - "461Result.xml"
+      - "35Result.xml"
+  dependencies:
+    - build
+      
+release:
+  stage: deploy
+  only:
+    - tags
+  script:
+    #Copy DLLs to lib folder for NuGet
+    - mkdir -p "lib/net461" && cp "Direct-Messaging-SDK-4.6.1 Unit Tests/bin/Release/Messaging Library.dll" "lib/net461/Messaging Library.dll"
+    - mkdir -p "lib/net35" && cp "Direct-Messaging-SDK-3.5/bin/Release/MessagingLibrary-3.5.dll" "lib/net35/Messaging Library.dll"
+    - sed -i "s/version-num/${BuildConfiguration[0]}/g" MessagingLibrary.nuspec
+    - sed -i "s/author-name/DataMotion/g" MessagingLibrary.nuspec
+    - sed -i "s/copyright-date/Copyright 2018/g" MessagingLibrary.nuspec
+    - nuget pack MessagingLibrary.nuspec
+    - nuget setApiKey $ApiKey -Source https://api.nuget.org/v3/index.json
+    - nuget push *.nupkg -Source https://api.nuget.org/v3/index.json
+  environment:
+    name: nuget
+  dependencies:
+    - build
