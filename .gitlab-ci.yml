@@ -37,9 +37,8 @@ test:
     - echo "ToAddress:"$ToAddress >> "Unit Test Documents/MessageData.txt"
     - echo "FromAddress:"$FromAddress >> "Unit Test Documents/MessageData.txt"
     #Change directory and run unit tests
-    #Debug
-    - nunit "Direct-Messaging-SDK-3.5 Unit Tests/bin/Release/Consolidated Unit Tests.dll" --result 35Result.xml
-    - nunit "Direct-Messaging-SDK-4.6.1 Unit Tests/bin/Release/Consolidated Unit Tests-3.5.dll" --result 461Result.xml
+    - nunit "Direct-Messaging-SDK-3.5 Unit Tests/bin/Release/Direct-Messaging-SDK-3.5 Unit Tests.dll" --result 35Result.xml
+    - nunit "Direct-Messaging-SDK-4.6.1 Unit Tests/bin/Release/Direct-Messaging-SDK-4.6.1 Unit Tests.dll" --result 461Result.xml
   artifacts:
     paths:
       - "461Result.xml"
