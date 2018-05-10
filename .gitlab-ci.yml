@@ -19,6 +19,8 @@ build:
     #Debug
     - ls "Direct-Messaging-SDK-3.5/bin/Release/"
     - ls "Direct-Messaging-SDK-4.6.1/bin/Release/"
+    - ls "Direct-Messaging-SDK-3.5 Unit Tests/bin/Release"
+    - ls "Direct-Messaging-SDK-4.6.1 Unit Tests/bin/Release"
   artifacts:
     paths:
       - "Direct-Messaging-SDK-3.5/bin/Release/"
@@ -36,8 +38,6 @@ test:
     - echo "FromAddress:"$FromAddress >> "Unit Test Documents/MessageData.txt"
     #Change directory and run unit tests
     #Debug
-    - ls "Direct-Messaging-SDK-3.5 Unit Tests/bin/Release"
-    - ls "Direct-Messaging-SDK-4.6.1 Unit Tests/bin/Release"
     - nunit "Direct-Messaging-SDK-3.5 Unit Tests/bin/Release/Consolidated Unit Tests.dll" --result 35Result.xml
     - nunit "Direct-Messaging-SDK-4.6.1 Unit Tests/bin/Release/Consolidated Unit Tests-3.5.dll" --result 461Result.xml
   artifacts:
