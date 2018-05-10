@@ -32,7 +32,7 @@ test:
   stage: test
   script:
     #Write Config File from Environment Variables
-    - echo "UserIdOrEmail:"$UserIdOrEmail > "Unit Test Documents/Test Documents/MessageData.txt"
+    - echo "UserIdOrEmail:"$UserIdOrEmail > "Unit Test Documents/MessageData.txt"
     - echo "Password:"$Password >> "Unit Test Documents/MessageData.txt"
     - echo "ToAddress:"$ToAddress >> "Unit Test Documents/MessageData.txt"
     - echo "FromAddress:"$FromAddress >> "Unit Test Documents/MessageData.txt"
