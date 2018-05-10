@@ -1,5 +1,6 @@
 using System.Reflection;
 using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
 
 [assembly: AssemblyTitle("Direct-Messaging-SDK-4.6.1 Unit Tests")]
 [assembly: AssemblyDescription("")]
