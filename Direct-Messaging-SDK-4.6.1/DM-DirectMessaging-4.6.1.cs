@@ -502,7 +502,7 @@ namespace Direct_Messaging_SDK_461
 
                 try
                 {
-                    HttpResponseMessage response = await client.GetAsync(_baseUrl + "/Message/" + MessageId + "/Metadata/");
+                    HttpResponseMessage response = await client.GetAsync(_baseUrl + "/Message/" + MessageId + "/Metadata");
                     string messageMetadataString = await response.Content.ReadAsStringAsync();
                     response.EnsureSuccessStatusCode();
 
@@ -530,7 +530,7 @@ namespace Direct_Messaging_SDK_461
                 try
                 {
                     string messageId = model.MessageId.ToString();
-                    HttpResponseMessage response = await client.PostAsJsonAsync(_baseUrl + "/Message.svc/" + messageId + "/Retract/", model);
+                    HttpResponseMessage response = await client.PostAsJsonAsync(_baseUrl + "/Message/" + messageId + "/Retract", model);
                     response.EnsureSuccessStatusCode();
 
                     return await response.Content.ReadAsStringAsync();
@@ -612,7 +612,7 @@ namespace Direct_Messaging_SDK_461
                 {
                     try
                     {
-                        HttpResponseMessage response = await client.DeleteAsync(_baseUrl + "/Message/" + messageId + "?Permanently=true/");
+                        HttpResponseMessage response = await client.DeleteAsync(_baseUrl + "/Message/" + messageId + "?Permanently=true");
                         response.EnsureSuccessStatusCode();
 
                         return await response.Content.ReadAsStringAsync();
