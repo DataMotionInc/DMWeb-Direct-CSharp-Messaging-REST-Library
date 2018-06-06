@@ -447,11 +447,11 @@ namespace Direct_Messaging_SDK_4._6._1_Unit_Tests
 
             [Test, Order(26)]
             [Category("Create Folder")]
-            public async System.Threading.Tasks.Task CreateFolderPositiveTest()
+            public void CreateFolderPositiveTest()
             {
                 Thread.Sleep(5000);
-                Context.folderId = await Context.Direct.Folders.Create(new Folders.Create { FolderName = "UnitTest4.6.1 (Direct)", FolderType = 0 });
-                Context.trackSentFID = await Context.Direct.Folders.Create(new Folders.Create { FolderName = "TrackSent4.6.1 (Direct)", FolderType = 1 });
+                Context.folderId = Context.Direct.Folders.Create(new Folders.Create { FolderName = "UnitTest4.6.1 (Direct)", FolderType = 0 }).GetAwaiter().GetResult();
+                Context.trackSentFID = Context.Direct.Folders.Create(new Folders.Create { FolderName = "TrackSent4.6.1 (Direct)", FolderType = 1 }).GetAwaiter().GetResult();
 
                 Thread.Sleep(5000);
             }
