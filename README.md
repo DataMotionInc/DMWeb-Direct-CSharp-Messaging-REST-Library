@@ -3,9 +3,9 @@
 [![DataMotion Logo](https://www.datamotionhealth.com/wp-content/themes/dhealth/images/logo.png)](https://datamotion.com)
 
 ## Build Status
-| Build  | Status                                                                            | Released |
-| ------ | --------------------------------------------------------------------------------- | -------- |
-| master | ![build status] (https://gitlab.com/cly0896/Library//badges/<23367303>/build.svg) |          |
+| Build  | Status                                                                            | Released  |
+| ------ | --------------------------------------------------------------------------------- | --------- |
+| master | ![build status] (https://gitlab.com/cly0896/Library//badges/<23367303>/build.svg) | ✓ 1.0.0.0 | 
 
 ## Description
 This is a .NET Software Development Kit (SDK) for DataMotion Direct Messaging. This SDK us a wrapper providing helper functions four our Direct Messaging RESTful APIs. This code is simplistic in nature, and is present to provide a complete yet basic implementation.
