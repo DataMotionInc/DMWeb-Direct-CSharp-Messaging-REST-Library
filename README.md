@@ -27,8 +27,8 @@ or
 
 ## Using the SDK
 Simply include the release DLL provided or compiled on your own into your .NET Project
- > Nuget Package coming soon!
 
+This package can also be installed via the [NuGet Gallery.](https://www.nuget.org/packages/DMWeb.Direct.NET.Messaging/)
 ## Authors
 
 | Name           | Title                      |
