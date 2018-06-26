@@ -9,7 +9,7 @@
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Direct_Messaging_SDK_461</RootNamespace>
-    <AssemblyName>Direct-Messaging-SDK-4.6.1</AssemblyName>
+    <AssemblyName>DataMotion Messaging Library</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <NuGetPackageImportStamp>
