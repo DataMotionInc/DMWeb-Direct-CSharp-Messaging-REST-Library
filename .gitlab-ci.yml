@@ -53,8 +53,8 @@ release:
     - tags
   script:
     #Copy DLLs to lib folder for NuGet
-    - mkdir -p "lib/net461" && cp "Direct-Messaging-SDK-4.6.1/bin/Release/Direct-Messaging-SDK-4.6.1.dll" "lib/net461/Messaging Library.dll"
-    - mkdir -p "lib/net35" && cp "Direct-Messaging-SDK-3.5/bin/Release/Direct-Messaging-SDK-3.5.dll" "lib/net35/Messaging Library.dll"
+    - mkdir -p "lib/net461" && cp "Direct-Messaging-SDK-4.6.1/bin/Release/DataMotion Messaging Library.dll" "lib/net461/DataMotion Messaging Library.dll"
+    - mkdir -p "lib/net35" && cp "Direct-Messaging-SDK-3.5/bin/Release/DataMotion Messaging Library.dll" "lib/net35/DataMotion Messaging Librarys.dll"
     - sed -i "s/version-num/${BuildConfiguration[0]}/g" MessagingLibrary.nuspec
     - sed -i "s/author-name/DataMotion/g" MessagingLibrary.nuspec
     - sed -i "s/copyright-date/Copyright 2018/g" MessagingLibrary.nuspec
