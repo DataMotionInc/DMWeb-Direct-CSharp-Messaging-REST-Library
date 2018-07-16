@@ -1,4 +1,6 @@
-﻿namespace Direct_Messaging_SDK_3._5.Models
+﻿using System.Collections.Generic;
+
+namespace Direct_Messaging_SDK_3._5.Models
 {
     public class Folders
     {
@@ -24,7 +26,7 @@
             /// <summary>
             /// Create an array (Folders) of type Folder which has the data types of the payload being received
             /// </summary>
-            public Create[] Folders { get; set; }
+            public List<Create> Folders = new List<Create>();
         }
 
         public class FolderResponse

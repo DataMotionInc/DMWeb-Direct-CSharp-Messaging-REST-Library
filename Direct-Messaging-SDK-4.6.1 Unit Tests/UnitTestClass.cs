@@ -329,7 +329,7 @@ namespace Direct_Messaging_SDK_4._6._1_Unit_Tests
 
                 try
                 {
-                    Context.Direct.Message.Move(new Messaging.MessageOperations { MessageId = MID, DestinationFolderId = DFID }).GetAwaiter().GetResult();
+                    Context.Direct.Message.Move(new Messaging.MoveMessageRequest { DestinationFolderId = DFID }, MID.ToString()).GetAwaiter().GetResult();
                 }
                 catch (HttpRequestException ex)
                 {
@@ -346,7 +346,7 @@ namespace Direct_Messaging_SDK_4._6._1_Unit_Tests
 
                 try
                 {
-                    Context.Direct.Message.Retract(new Messaging.MessageOperations { MessageId = MID }).GetAwaiter().GetResult();
+                    Context.Direct.Message.Retract(MID.ToString()).GetAwaiter().GetResult();
                 }
                 catch (HttpRequestException ex)
                 {
@@ -472,7 +472,7 @@ namespace Direct_Messaging_SDK_4._6._1_Unit_Tests
 
                 int DFID = int.Parse(Context.trackSentFID);
 
-                Context.Direct.Message.Move(new Messaging.MessageOperations { MessageId = Context.moveMID, DestinationFolderId = DFID }).GetAwaiter().GetResult();
+                Context.Direct.Message.Move(new Messaging.MoveMessageRequest { DestinationFolderId = DFID }, Context.moveMID.ToString()).GetAwaiter().GetResult();
             }
 
             [Test, Order(28)]
@@ -966,7 +966,7 @@ namespace Direct_Messaging_SDK_4._6._1_Unit_Tests
 
                 try
                 {
-                    Context.Direct.Message.Move(new Messaging.MessageOperations { MessageId = MID }).GetAwaiter().GetResult();
+                    Context.Direct.Message.Move(new Messaging.MoveMessageRequest { DestinationFolderId = 0 }, MID.ToString()).GetAwaiter().GetResult();
                 }
                 catch (HttpRequestException ex)
                 {
@@ -982,7 +982,7 @@ namespace Direct_Messaging_SDK_4._6._1_Unit_Tests
 
                 try
                 {
-                    Context.Direct.Message.Move(new Messaging.MessageOperations { DestinationFolderId = DFID }).GetAwaiter().GetResult();
+                    Context.Direct.Message.Move(new Messaging.MoveMessageRequest { DestinationFolderId = DFID }, 0.ToString()).GetAwaiter().GetResult();
                 }
                 catch (HttpRequestException ex)
                 {
@@ -999,7 +999,7 @@ namespace Direct_Messaging_SDK_4._6._1_Unit_Tests
 
                 try
                 {
-                    Context.Direct.Message.Move(new Messaging.MessageOperations { MessageId = MID, DestinationFolderId = 15143 }).GetAwaiter().GetResult();
+                    Context.Direct.Message.Move(new Messaging.MoveMessageRequest { DestinationFolderId = 15143 }, MID.ToString()).GetAwaiter().GetResult();
                 }
                 catch (HttpRequestException ex)
                 {
@@ -1016,7 +1016,7 @@ namespace Direct_Messaging_SDK_4._6._1_Unit_Tests
 
                 try
                 {
-                    Context.Direct.Message.Move(new Messaging.MessageOperations { MessageId = MID, DestinationFolderId = DFID }).GetAwaiter().GetResult();
+                    Context.Direct.Message.Move(new Messaging.MoveMessageRequest { DestinationFolderId = DFID }, MID.ToString()).GetAwaiter().GetResult();
                 }
                 catch (HttpRequestException ex)
                 {
@@ -1033,7 +1033,7 @@ namespace Direct_Messaging_SDK_4._6._1_Unit_Tests
 
                 try
                 {
-                    Context.Direct.Message.Move(new Messaging.MessageOperations { MessageId = MID, DestinationFolderId = DFID }).GetAwaiter().GetResult();
+                    Context.Direct.Message.Move(new Messaging.MoveMessageRequest { DestinationFolderId = DFID }, MID.ToString()).GetAwaiter().GetResult();
                 }
                 catch (HttpRequestException ex)
                 {
@@ -1054,7 +1054,7 @@ namespace Direct_Messaging_SDK_4._6._1_Unit_Tests
 
                 int MID = Context.Direct.Message.Send(new Messaging.SendMessage { To = { toAddress }, Subject = "Retract Message Test 4.6.1 (Direct)" }).GetAwaiter().GetResult();
 
-                Context.Direct.Message.Retract(new Messaging.MessageOperations { MessageId = MID }).GetAwaiter().GetResult();
+                Context.Direct.Message.Retract(MID.ToString()).GetAwaiter().GetResult();
             }
 
             [Test]
@@ -1065,7 +1065,7 @@ namespace Direct_Messaging_SDK_4._6._1_Unit_Tests
 
                 try
                 {
-                    Context.Direct.Message.Retract(new Messaging.MessageOperations { MessageId = MID }).GetAwaiter().GetResult();
+                    Context.Direct.Message.Retract(MID.ToString()).GetAwaiter().GetResult();
                 }
                 catch (HttpRequestException ex)
                 {

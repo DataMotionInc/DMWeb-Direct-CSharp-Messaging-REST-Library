@@ -327,7 +327,7 @@ namespace Messaging_Library.TestFixtures.UnitTestClass
 
             try
             {
-                Context.dmWeb.Message.Move(new Messaging.MessageOperations { MessageId = MID, DestinationFolderId = DFID });
+                Context.dmWeb.Message.Move(new Messaging.MoveMessageRequest { DestinationFolderId = DFID }, MID.ToString());
             }
             catch (WebException ex)
             {
@@ -344,7 +344,7 @@ namespace Messaging_Library.TestFixtures.UnitTestClass
 
             try
             {
-                Context.dmWeb.Message.Retract(new Messaging.MessageOperations { MessageId = MID });
+                Context.dmWeb.Message.Retract(MID.ToString());
             }
             catch (WebException ex)
             {
@@ -501,7 +501,7 @@ namespace Messaging_Library.TestFixtures.UnitTestClass
 
             int DFID = int.Parse(Context.trackSentFID);
 
-            Context.dmWeb.Message.Move(new Messaging.MessageOperations { MessageId = Context.moveMID, DestinationFolderId = DFID });
+            Context.dmWeb.Message.Move(new Messaging.MoveMessageRequest { DestinationFolderId = DFID }, Context.moveMID.ToString());
         }
 
         [Test, Order(31)]
@@ -964,7 +964,7 @@ namespace Messaging_Library.TestFixtures.UnitTestClass
 
             try
             {
-                Context.dmWeb.Message.Move(new Messaging.MessageOperations { MessageId = MID });
+                Context.dmWeb.Message.Move(new Messaging.MoveMessageRequest { DestinationFolderId = 0 }, MID.ToString());
             }
             catch (WebException ex)
             {
@@ -980,7 +980,7 @@ namespace Messaging_Library.TestFixtures.UnitTestClass
 
             try
             {
-                Context.dmWeb.Message.Move(new Messaging.MessageOperations { DestinationFolderId = DFID });
+                Context.dmWeb.Message.Move(new Messaging.MoveMessageRequest { DestinationFolderId = DFID }, 0.ToString());
             }
             catch (WebException ex)
             {
@@ -997,7 +997,7 @@ namespace Messaging_Library.TestFixtures.UnitTestClass
 
             try
             {
-                Context.dmWeb.Message.Move(new Messaging.MessageOperations { MessageId = MID, DestinationFolderId = 15143 });
+                Context.dmWeb.Message.Move(new Messaging.MoveMessageRequest { DestinationFolderId = 15143 }, MID.ToString());
             }
             catch (WebException ex)
             {
@@ -1014,7 +1014,7 @@ namespace Messaging_Library.TestFixtures.UnitTestClass
 
             try
             {
-                Context.dmWeb.Message.Move(new Messaging.MessageOperations { MessageId = MID, DestinationFolderId = DFID });
+                Context.dmWeb.Message.Move(new Messaging.MoveMessageRequest { DestinationFolderId = DFID }, MID.ToString());
             }
             catch (WebException ex)
             {
@@ -1031,7 +1031,7 @@ namespace Messaging_Library.TestFixtures.UnitTestClass
 
             try
             {
-                Context.dmWeb.Message.Move(new Messaging.MessageOperations { MessageId = MID, DestinationFolderId = DFID });
+                Context.dmWeb.Message.Move(new Messaging.MoveMessageRequest { DestinationFolderId = DFID }, MID.ToString());
             }
             catch (WebException ex)
             {
@@ -1052,7 +1052,7 @@ namespace Messaging_Library.TestFixtures.UnitTestClass
 
             int MID = Context.dmWeb.Message.Send(new Messaging.SendMessage { To = { toAddress }, Subject = "Retract Message Test 3.5" });
 
-            Context.dmWeb.Message.Retract(new Messaging.MessageOperations { MessageId = MID });
+            Context.dmWeb.Message.Retract(MID.ToString());
         }
 
         [Test]
@@ -1063,7 +1063,7 @@ namespace Messaging_Library.TestFixtures.UnitTestClass
 
             try
             {
-                Context.dmWeb.Message.Retract(new Messaging.MessageOperations { MessageId = MID });
+                Context.dmWeb.Message.Retract(MID.ToString());
             }
             catch (WebException ex)
             {
