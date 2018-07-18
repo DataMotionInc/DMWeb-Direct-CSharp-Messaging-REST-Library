@@ -567,7 +567,7 @@ namespace Direct_Messaging_SDK_3._5
 
                 try
                 {
-                    string response = Encoding.UTF8.GetString(client.UploadData(_baseUrl + "/Message/" + messageId + "/Move/", "POST", jsonByteArray));
+                    string response = Encoding.UTF8.GetString(client.UploadData(_baseUrl + "/Message/" + messageId + "/Move", "POST", jsonByteArray));
 
                     return response;
                 }

@@ -554,7 +554,7 @@ namespace Direct_Messaging_SDK_461
 
                 try
                 {
-                    HttpResponseMessage response = await client.PostAsJsonAsync(_baseUrl + "/Message/" + messageId + "/Move/", model);
+                    HttpResponseMessage response = await client.PostAsJsonAsync(_baseUrl + "/Message/" + messageId + "/Move", model);
                     response.EnsureSuccessStatusCode();
 
                     return await response.Content.ReadAsStringAsync();
