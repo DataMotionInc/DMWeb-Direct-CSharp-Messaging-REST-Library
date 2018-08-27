@@ -2,6 +2,39 @@
 
 namespace Direct_Messaging_SDK_461.Models
 {
+    public enum MessageStatusCodes
+    {
+        None,
+        DirectMessageFailed = -8,
+        PendingUpload = -7,
+        PendingLicense = -6,
+        Pending = -5,
+        Restricted = -4,
+        Deleted = -3,
+        Retracted = -2,
+        Draft = -1,
+        EditMode = 0,
+        NoticeInQueue = 1,
+        NoticeSent = 2,
+        UnRead = 3,
+        Read = 4,
+        SentSafeTls = 5,
+        NoticeError = 6,
+        Pop3Delivered = 7,
+        PushedZip = 8,
+        SecureFax = 9,
+        PushedPdf = 10,
+        DistributionRequestProcessed = 11,
+        DistributionRequestFailed = 12,
+        WorkflowDestinationEnroute = 13,
+        WorkflowDestinationDelievered = 14,
+        WorkflowDestinationUnreachable = 15,
+        DirectMessageQueued = 16,
+        DirectMessageSent = 17,
+        DirectMessageDispatched = 18,
+        DirectMessageProcessed = 19
+    };
+
     public class Messaging
     {
         /// <summary>
@@ -42,7 +75,7 @@ namespace Direct_Messaging_SDK_461.Models
             public int MessageId { get; set; }
             public int MessageSize { get; set; }
             public bool Read { get; set; }
-            public int MessageStatus { get; set; }
+            public MessageStatusCodes MessageStatus { get; set; }
             public string SenderAddress { get; set; }
             public string Subject { get; set; }
         }
@@ -104,7 +137,7 @@ namespace Direct_Messaging_SDK_461.Models
             public int MessageStatusId { get; set; }
             public string PasswordHint { get; set; }
             public bool Read { get; set; }
-            public int MessageStatus { get; set; }
+            public MessageStatusCodes MessageStatus { get; set; }
             public bool ReadConfirmation { get; set; }
             public string SenderEmail { get; set; }
             public int SenderId { get; set; }
@@ -161,7 +194,7 @@ namespace Direct_Messaging_SDK_461.Models
             public string DateOpened { get; set; }
             public string Email { get; set; }
             public string MessageStatusDescription { get; set; }
-            public int MessageStatus { get; set; }
+            public MessageStatusCodes MessageStatus { get; set; }
             public string ReceiverField { get; set; }
         }
         public class MetadataResponse
