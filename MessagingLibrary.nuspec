@@ -11,7 +11,7 @@
     <iconUrl>https://support.datamotion.com/icon.png</iconUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>This is a .NET Software Development Kit (SDK) for DataMotion Direct Messaging. This SDK is a wrapper providing helper functions for our Messaging RESTful APIs. This code is simple in nature, and is present to provide a complete yet basic implementation.</description>
-    <releaseNotes>Initial Upload!</releaseNotes>
+    <releaseNotes>Please refer to Project Site for more information.</releaseNotes>
     <copyright>copyright-date</copyright>
     <tags>datamotion data motion secure mail securemail direct phi ihe ehr hipaa ehnac soap rest restful administration account company provisioning messaging email</tags>
 	<dependencies>
