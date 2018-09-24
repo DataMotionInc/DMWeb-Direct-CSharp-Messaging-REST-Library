@@ -552,7 +552,6 @@ namespace Messaging_Library.TestFixtures.UnitTestClass
                 string[] linesplit4 = str4.Split(':');
                 string fromAddress = linesplit4[1];
 
-                //string location = @"Test Documents\test.txt");
                 Context.mimeMessageId = Context.Direct.Message.SendMimeMessage("From: User1 <user1@dmweb.citest.com>\r\nDate: Fri, 21 Sep 2018 14:41:44 -0400\r\nSubject: Test MIME String\r\nMessage-Id: <3A8GMGOFI5U4.S80Z2OIX4YNA1@DellBlackTop>\r\nTo: \"user1@dmweb.citest.com\" <user1@dmweb.citest.com>\r\nCc: \r\nBcc: \r\nX-DateCreated: Fri, 21 Sep 2018 14:41:44 -0400\r\nMIME-Version: 1.0\r\nContent-Type: text/plain; charset=utf-8\r\n\r\nTest\r\n").GetAwaiter().GetResult();
             }
 
@@ -1218,7 +1217,6 @@ namespace Messaging_Library.TestFixtures.UnitTestClass
                     string[] linesplit4 = str4.Split(':');
                     string fromAddress = linesplit4[1];
 
-                    //string location = @"Test Documents\test.txt");
                     Context.Direct.Message.SendMimeMessage("From: User1 <user1@dmweb.citest.com>\r\nDate: Fri, 21 Sep 2018 14:44:38 -0400\r\nSubject: Test MIME String\r\nMessage-Id: <8FWTG9PFI5U4.4II4VETOXSE9@DellBlackTop>\r\nTo: \r\nCc: \r\nBcc: \r\nX-DateCreated: Fri, 21 Sep 2018 14:44:38 -0400\r\nMIME-Version: 1.0\r\nContent-Type: text/plain; charset=utf-8\r\n\r\nTest\r\n").GetAwaiter().GetResult();
                 }
                 catch (HttpRequestException ex)
