@@ -1,20 +1,19 @@
-﻿using System;
-using System.Net.Http;
+﻿using System.Net.Http;
 using System.IO;
 using System.Threading;
 using System.Reflection;
 using NUnit.Framework;
-using Direct_Messaging_SDK_461;
-using Direct_Messaging_SDK_461.Models;
+using DMWeb_REST;
+using DMWeb_REST.Models;
 
-namespace Direct_Messaging_SDK_4._6._1_Unit_Tests
+namespace Messaging_Library.TestFixtures.UnitTestClass
 {
     [TestFixture]
     public class GroupBoxTests
     {
         public class Context
         {
-            public static DM_DirectMessaging_461 Direct = new DM_DirectMessaging_461();
+            public static DMWeb Direct = new DMWeb();
             public static string folderId;
             public static string trackSentFID;
             public static int sendDeleteMID;

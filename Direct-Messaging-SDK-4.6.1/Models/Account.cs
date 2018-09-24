@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Direct_Messaging_SDK_461.Models
+﻿namespace DMWeb_REST.Models
 {
     public class Account
     {

@@ -1,17 +1,15 @@
 ﻿using System.Collections.Generic;
-using System.IO;
 using System.Net;
 using System.Text;
 using Newtonsoft.Json;
-using MimeKit;
-using Direct_Messaging_SDK_3._5.Models;
+using DMWeb_REST.Models;
 
-namespace Direct_Messaging_SDK_3._5
+namespace DMWeb_REST
 {
     /// <summary>
     /// Class functions
     /// </summary>
-    public class Direct_Messaging_SDK_35
+    public class DMWeb
     { 
         public static string _baseUrl = "";
         public static string _sessionKey = "";
@@ -29,7 +27,7 @@ namespace Direct_Messaging_SDK_3._5
         /// <summary>
         /// Default constructor that sets the _baseUrl to SecureMail
         /// </summary>
-        public Direct_Messaging_SDK_35()
+        public DMWeb()
         {
             _baseUrl = "https://directbeta.datamotion.com/SecureMessagingApi";
         }
@@ -38,7 +36,7 @@ namespace Direct_Messaging_SDK_3._5
         /// Non-default constructor that allows the host URL to be changed
         /// </summary>
         /// <param name="url">The string of the destination URL</param>
-        public Direct_Messaging_SDK_35(string url)
+        public DMWeb(string url)
         {
             _baseUrl = url;
         }
@@ -157,7 +155,7 @@ namespace Direct_Messaging_SDK_3._5
             /// Displays the details of a folder
             /// </summary>
             /// <returns>HttpResponseMessage deserialized into FolderResponses object</returns>
-            public Folders.Folder List()
+            public List<Folders.Create> List()
             {
                 WebClient client = new WebClient();
                 client.Headers.Add("Content-Type", "application/json");
@@ -166,7 +164,7 @@ namespace Direct_Messaging_SDK_3._5
                 try
                 {
                     string response = client.DownloadString(_baseUrl + "/Folder/List");
-                    Folders.Folder folderResponse = JsonConvert.DeserializeObject<Folders.Folder>(response);
+                    List<Folders.Create> folderResponse = JsonConvert.DeserializeObject<List<Folders.Create>>(response);
 
                     return folderResponse;
                 }
@@ -705,115 +703,29 @@ namespace Direct_Messaging_SDK_3._5
             /// <param name="model"></param>
             /// <param name="location"></param>
             /// <returns>Mime MessageID as a string</returns>
-            public string SendMimeMessage(Messaging.SendMessage model, string location)
+            public string SendMimeMessage(string mimeString)
             {
                 WebClient client = new WebClient();
                 client.Headers.Add("Content-Type", "application/json");
                 client.Headers.Add("X-Session-Key", _sessionKey);
 
-                if (location != "")
+                Messaging.SendMimeMessageRequest mimeMessageObject = new Messaging.SendMimeMessageRequest();
+                mimeMessageObject.MimeMessage = mimeString;
+
+                string jsonString = JsonConvert.SerializeObject(mimeMessageObject);
+                byte[] jsonByteArray = Encoding.UTF8.GetBytes(jsonString);
+
+                try
                 {
-                    var message = new MimeMessage();
+                    string response = Encoding.UTF8.GetString(client.UploadData(_baseUrl + "/Message/Mime", "POST", jsonByteArray));
 
-                    message.From.Add(new MailboxAddress(model.From));
+                    Messaging.SendMimeMessageResponse mid = JsonConvert.DeserializeObject<Messaging.SendMimeMessageResponse>(response);
 
-                    foreach (string str in model.To)
-                    {
-                        message.To.Add(new MailboxAddress(str));
-                    }
-
-                    foreach (string str in model.Cc)
-                    {
-                        message.Cc.Add(new MailboxAddress(str));
-                    }
-
-                    foreach (string str in model.Bcc)
-                    {
-                        message.Bcc.Add(new MailboxAddress(str));
-                    }
-
-                    message.Subject = model.Subject;
-                    string messageString = model.TextBody;
-
-                    var body = new TextPart("plain") { Text = @messageString };
-
-                    var attachment = new MimePart("", "")
-                    {
-                        ContentObject = new ContentObject(File.OpenRead(location), ContentEncoding.Default),
-                        ContentDisposition = new ContentDisposition(ContentDisposition.Attachment),
-                        ContentTransferEncoding = ContentEncoding.Base64,
-                        FileName = Path.GetFileName(location)
-                    };
-
-                    var multipart = new Multipart("mixed");
-                    multipart.Add(body);
-                    multipart.Add(attachment);
-
-                    message.Body = multipart;
-
-                    Messaging.SendMimeMessageRequest mimeMessageObject = new Messaging.SendMimeMessageRequest();
-                    mimeMessageObject.MimeMessage = message.ToString();
-
-                    string jsonString = JsonConvert.SerializeObject(mimeMessageObject);
-                    byte[] jsonByteArray = Encoding.UTF8.GetBytes(jsonString);
-
-                    try
-                    {
-                        string response = Encoding.UTF8.GetString(client.UploadData(_baseUrl + "/Message/Mime", "POST", jsonByteArray));
-
-                        Messaging.SendMimeMessageResponse mid = JsonConvert.DeserializeObject<Messaging.SendMimeMessageResponse>(response);
-
-                        return mid.MessageId.ToString();
-                    }
-                    catch (WebException ex)
-                    {
-                        throw ex;
-                    }
+                    return mid.MessageId.ToString();
                 }
-                else
+                catch (WebException ex)
                 {
-                    var message = new MimeMessage();
-
-                    message.From.Add(new MailboxAddress(model.From));
-
-                    foreach (string str in model.To)
-                    {
-                        message.To.Add(new MailboxAddress(str));
-                    }
-
-                    foreach (string str in model.Cc)
-                    {
-                        message.Cc.Add(new MailboxAddress(str));
-                    }
-
-                    foreach (string str in model.Bcc)
-                    {
-                        message.Bcc.Add(new MailboxAddress(str));
-                    }
-
-                    message.Subject = model.Subject;
-                    string messageString = model.TextBody;
-
-                    message.Body = new TextPart("plain") { Text = @messageString };
-
-                    Messaging.SendMimeMessageRequest mimeMessageObject = new Messaging.SendMimeMessageRequest();
-                    mimeMessageObject.MimeMessage = message.ToString();
-
-                    string jsonString = JsonConvert.SerializeObject(mimeMessageObject);
-                    byte[] jsonByteArray = Encoding.UTF8.GetBytes(jsonString);
-
-                    try
-                    {
-                        string response = Encoding.UTF8.GetString(client.UploadData(_baseUrl + "/Message/Mime", "POST", jsonByteArray));
-
-                        Messaging.SendMimeMessageResponse mid = JsonConvert.DeserializeObject<Messaging.SendMimeMessageResponse>(response);
-
-                        return mid.MessageId.ToString();
-                    }
-                    catch (WebException ex)
-                    {
-                        throw ex;
-                    }
+                    throw ex;
                 }
             }
         }

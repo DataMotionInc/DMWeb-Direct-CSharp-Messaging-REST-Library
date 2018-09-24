@@ -1,20 +1,19 @@
-﻿using System;
-using System.Net.Http;
+﻿using System.Net.Http;
 using System.IO;
 using System.Threading;
 using System.Reflection;
 using NUnit.Framework;
-using Direct_Messaging_SDK_461;
-using Direct_Messaging_SDK_461.Models;
+using DMWeb_REST;
+using DMWeb_REST.Models;
 
-namespace Direct_Messaging_SDK_4._6._1_Unit_Tests
+namespace Messaging_Library.TestFixtures.UnitTestClass
 {
     [TestFixture]
     public class UnitTestClass
     {
         public class Context
         {
-            public static DM_DirectMessaging_461 Direct = new DM_DirectMessaging_461();
+            public static DMWeb Direct = new DMWeb();
             public static string folderId;
             public static string trackSentFID;
             public static int sendDeleteMID;
@@ -404,7 +403,7 @@ namespace Direct_Messaging_SDK_4._6._1_Unit_Tests
 
                 try
                 {
-                    Context.Direct.Message.SendMimeMessage(new Messaging.SendMessage { To = { toAddress }, From = fromAddress, Subject = "Mime Test 4.6.1 (Direct)", TextBody = "Mime Message Test" }, _testDataPath).GetAwaiter().GetResult();
+                    Context.Direct.Message.SendMimeMessage("From: User1 <user1@dmweb.citest.com>\r\nDate: Fri, 21 Sep 2018 14:41:44 -0400\r\nSubject: Test MIME String\r\nMessage-Id: <3A8GMGOFI5U4.S80Z2OIX4YNA1@DellBlackTop>\r\nTo: \"user1@dmweb.citest.com\" <user1@dmweb.citest.com>\r\nCc: \r\nBcc: \r\nX-DateCreated: Fri, 21 Sep 2018 14:41:44 -0400\r\nMIME-Version: 1.0\r\nContent-Type: text/plain; charset=utf-8\r\n\r\nTest\r\n").GetAwaiter().GetResult();
                 }
                 catch (HttpRequestException ex)
                 {
@@ -554,7 +553,7 @@ namespace Direct_Messaging_SDK_4._6._1_Unit_Tests
                 string fromAddress = linesplit4[1];
 
                 //string location = @"Test Documents\test.txt");
-                Context.mimeMessageId = Context.Direct.Message.SendMimeMessage(new Messaging.SendMessage { To = { toAddress }, From = fromAddress, Subject = "Mime Test with SessionKey 4.6.1 (Direct)", TextBody = "Mime Message Test" }, _testDataPath).GetAwaiter().GetResult();
+                Context.mimeMessageId = Context.Direct.Message.SendMimeMessage("From: User1 <user1@dmweb.citest.com>\r\nDate: Fri, 21 Sep 2018 14:41:44 -0400\r\nSubject: Test MIME String\r\nMessage-Id: <3A8GMGOFI5U4.S80Z2OIX4YNA1@DellBlackTop>\r\nTo: \"user1@dmweb.citest.com\" <user1@dmweb.citest.com>\r\nCc: \r\nBcc: \r\nX-DateCreated: Fri, 21 Sep 2018 14:41:44 -0400\r\nMIME-Version: 1.0\r\nContent-Type: text/plain; charset=utf-8\r\n\r\nTest\r\n").GetAwaiter().GetResult();
             }
 
             [Test, Order(34)]
@@ -1220,7 +1219,7 @@ namespace Direct_Messaging_SDK_4._6._1_Unit_Tests
                     string fromAddress = linesplit4[1];
 
                     //string location = @"Test Documents\test.txt");
-                    Context.Direct.Message.SendMimeMessage(new Messaging.SendMessage { From = fromAddress, Subject = "No To Address", TextBody = "Mime Message Test 4.6.1 (Direct)" }, _testDataPath).GetAwaiter().GetResult();
+                    Context.Direct.Message.SendMimeMessage("From: User1 <user1@dmweb.citest.com>\r\nDate: Fri, 21 Sep 2018 14:44:38 -0400\r\nSubject: Test MIME String\r\nMessage-Id: <8FWTG9PFI5U4.4II4VETOXSE9@DellBlackTop>\r\nTo: \r\nCc: \r\nBcc: \r\nX-DateCreated: Fri, 21 Sep 2018 14:44:38 -0400\r\nMIME-Version: 1.0\r\nContent-Type: text/plain; charset=utf-8\r\n\r\nTest\r\n").GetAwaiter().GetResult();
                 }
                 catch (HttpRequestException ex)
                 {

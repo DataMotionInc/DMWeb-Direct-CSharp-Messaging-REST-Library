@@ -1,18 +1,16 @@
 ﻿using System.IO;
 using System.Threading;
 using System.Net;
-using System;
 using System.Reflection;
-using System.Diagnostics;
 using NUnit.Framework;
-using Direct_Messaging_SDK_3._5;
-using Direct_Messaging_SDK_3._5.Models;
+using DMWeb_REST;
+using DMWeb_REST.Models;
 
 namespace Messaging_Library.TestFixtures.UnitTestClass
 {
     public class Context
     {
-        public static Direct_Messaging_SDK_35 dmWeb = new Direct_Messaging_SDK_35();
+        public static DMWeb dmWeb = new DMWeb();
         public static string folderId;
         public static string trackSentFID;
         public static int sendDeleteMID;
@@ -402,7 +400,7 @@ namespace Messaging_Library.TestFixtures.UnitTestClass
             try
             {
                 string location = _testDataPath;
-                Context.dmWeb.Message.SendMimeMessage(new Messaging.SendMessage { To = { toAddress }, From = fromAddress, Subject = "Mime Test 3.5", TextBody = "Mime Message Test" }, location);
+                Context.dmWeb.Message.SendMimeMessage("From: User1 <user1@dmweb.citest.com>\r\nDate: Fri, 21 Sep 2018 14:41:44 -0400\r\nSubject: Test MIME String\r\nMessage-Id: <3A8GMGOFI5U4.S80Z2OIX4YNA1@DellBlackTop>\r\nTo: \"user1@dmweb.citest.com\" <user1@dmweb.citest.com>\r\nCc: \r\nBcc: \r\nX-DateCreated: Fri, 21 Sep 2018 14:41:44 -0400\r\nMIME-Version: 1.0\r\nContent-Type: text/plain; charset=utf-8\r\n\r\nTest\r\n");
             }
             catch (WebException ex)
             {
@@ -552,7 +550,7 @@ namespace Messaging_Library.TestFixtures.UnitTestClass
             string fromAddress = linesplit4[1];
 
             string location = _testDataPath;
-            Context.mimeMessageId = Context.dmWeb.Message.SendMimeMessage(new Messaging.SendMessage { To = { toAddress }, From = fromAddress, Subject = "Mime Test with SessionKey 3.5", TextBody = "Mime Message Test" }, location);
+            Context.mimeMessageId = Context.dmWeb.Message.SendMimeMessage("From: User1 <user1@dmweb.citest.com>\r\nDate: Fri, 21 Sep 2018 14:41:44 -0400\r\nSubject: Test MIME String\r\nMessage-Id: <3A8GMGOFI5U4.S80Z2OIX4YNA1@DellBlackTop>\r\nTo: \"user1@dmweb.citest.com\" <user1@dmweb.citest.com>\r\nCc: \r\nBcc: \r\nX-DateCreated: Fri, 21 Sep 2018 14:41:44 -0400\r\nMIME-Version: 1.0\r\nContent-Type: text/plain; charset=utf-8\r\n\r\nTest\r\n");
         }
 
         [Test, Order(34)]
@@ -1219,7 +1217,7 @@ namespace Messaging_Library.TestFixtures.UnitTestClass
                 string fromAddress = linesplit4[1];
 
                 string location = @_testDataPath;
-                Context.dmWeb.Message.SendMimeMessage(new Messaging.SendMessage { From = fromAddress, Subject = "No To Address", TextBody = "Mime Message Test 3.5" }, location);
+                Context.dmWeb.Message.SendMimeMessage("From: User1 <user1@dmweb.citest.com>\r\nDate: Fri, 21 Sep 2018 14:44:38 -0400\r\nSubject: Test MIME String\r\nMessage-Id: <8FWTG9PFI5U4.4II4VETOXSE9@DellBlackTop>\r\nTo: \r\nCc: \r\nBcc: \r\nX-DateCreated: Fri, 21 Sep 2018 14:44:38 -0400\r\nMIME-Version: 1.0\r\nContent-Type: text/plain; charset=utf-8\r\n\r\nTest\r\n");
             }
             catch (WebException ex)
             {

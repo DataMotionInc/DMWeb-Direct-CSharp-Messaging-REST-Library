@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Direct_Messaging_SDK_461.Models
+namespace DMWeb_REST.Models
 {
     public enum MessageStatusCodes
     {

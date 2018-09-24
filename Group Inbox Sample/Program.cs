@@ -1,6 +1,6 @@
 ﻿using System;
-using Direct_Messaging_SDK_461;
-using Direct_Messaging_SDK_461.Models;
+using DMWeb_REST;
+using DMWeb_REST.Models;
 
 namespace Group_Inbox_Sample
 {
@@ -9,7 +9,7 @@ namespace Group_Inbox_Sample
 
         static void Main(string[] args)
         {
-            DM_DirectMessaging_461 direct = new DM_DirectMessaging_461();
+            DMWeb direct = new DMWeb();
 
             Account.LogOn user = new Account.LogOn();
             user.UserIdOrEmail = "";

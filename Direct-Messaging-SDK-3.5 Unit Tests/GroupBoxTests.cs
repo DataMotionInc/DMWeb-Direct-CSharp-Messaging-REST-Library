@@ -3,17 +3,17 @@ using System.IO;
 using System.Threading;
 using System.Reflection;
 using NUnit.Framework;
-using Direct_Messaging_SDK_3._5;
-using Direct_Messaging_SDK_3._5.Models;
+using DMWeb_REST;
+using DMWeb_REST.Models;
 
-namespace Direct_Messaging_SDK_3._5_Unit_Tests
+namespace Messaging_Library.TestFixtures.UnitTestClass
 {
     [TestFixture]
     public class GroupBoxTests
     {
         public class Context
         {
-            public static Direct_Messaging_SDK_35 Direct = new Direct_Messaging_SDK_35();
+            public static DMWeb Direct = new DMWeb();
             public static string folderId;
             public static string trackSentFID;
             public static int sendDeleteMID;
