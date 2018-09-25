@@ -22,5 +22,10 @@ namespace DMWeb_REST.Models
         {
             public int FolderId { get; set; }
         }
+
+        public class ListFolders
+        {
+            public List<Create> Folders = new List<Create>();
+        }
     }
 }

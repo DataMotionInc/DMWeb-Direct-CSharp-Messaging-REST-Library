@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
+﻿using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
-using System.Windows.Forms;
 using Newtonsoft.Json;
 using DMWeb_REST.Models;
 
@@ -152,7 +149,7 @@ namespace DMWeb_REST
             /// Displays the details of a folder
             /// </summary>
             /// <returns>HttpResponseMessage deserialized into FolderResponses object</returns>
-            public async Task<List<Folders.Create>> List()
+            public async Task<Folders.ListFolders> List()
             {
                 HttpClient client = new HttpClient();
 
@@ -164,7 +161,7 @@ namespace DMWeb_REST
                     response.EnsureSuccessStatusCode();
                     string stringFolders = await response.Content.ReadAsStringAsync();
 
-                    List<Folders.Create> folderResponse = JsonConvert.DeserializeObject<List<Folders.Create>>(stringFolders);
+                    Folders.ListFolders folderResponse = JsonConvert.DeserializeObject<Folders.ListFolders>(stringFolders);
 
                     return folderResponse;
                 }

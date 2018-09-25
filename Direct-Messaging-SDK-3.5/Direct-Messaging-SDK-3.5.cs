@@ -155,7 +155,7 @@ namespace DMWeb_REST
             /// Displays the details of a folder
             /// </summary>
             /// <returns>HttpResponseMessage deserialized into FolderResponses object</returns>
-            public List<Folders.Create> List()
+            public Folders.ListFolders List()
             {
                 WebClient client = new WebClient();
                 client.Headers.Add("Content-Type", "application/json");
@@ -164,7 +164,7 @@ namespace DMWeb_REST
                 try
                 {
                     string response = client.DownloadString(_baseUrl + "/Folder/List");
-                    List<Folders.Create> folderResponse = JsonConvert.DeserializeObject<List<Folders.Create>>(response);
+                    Folders.ListFolders folderResponse = JsonConvert.DeserializeObject<Folders.ListFolders>(response);
 
                     return folderResponse;
                 }

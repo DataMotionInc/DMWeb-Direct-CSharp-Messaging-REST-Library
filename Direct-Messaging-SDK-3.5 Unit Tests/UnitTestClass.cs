@@ -19,7 +19,6 @@ namespace Messaging_Library.TestFixtures.UnitTestClass
          
         public static string userName= "";
         public static string password = "";
-
     }
 
     [TestFixture]

@@ -1,4 +1,6 @@
-﻿namespace DMWeb_REST.Models
+﻿using System.Collections.Generic;
+
+namespace DMWeb_REST.Models
 {
     public class Folders
     {
@@ -19,6 +21,11 @@
         public class FolderResponse
         {
             public int FolderId { get; set; }
+        }
+
+        public class ListFolders
+        {
+            public List<Create> Folders = new List<Create>();
         }
     }
 }
