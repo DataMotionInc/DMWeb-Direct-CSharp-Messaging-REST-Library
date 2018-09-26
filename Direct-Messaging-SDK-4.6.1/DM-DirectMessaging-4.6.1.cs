@@ -25,7 +25,7 @@ namespace DMWeb_REST
         /// </summary>
         public DMWeb()
         {
-            _baseUrl = "https://directbeta.datamotion.com/SecureMessagingApi";
+            _baseUrl = "https://ssl.dmhisp.com/SecureMessagingAPI";
         }
 
         /// <summary>
