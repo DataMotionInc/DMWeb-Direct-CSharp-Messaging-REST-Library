@@ -1,5 +1,5 @@
-UserIdOrEmail:delegate1@customer.cmsafe.com
-Password:***REMOVED***
-ToAddress:delegate2@customer.cmsafe.com
-FromAddress:delegate1@customer.cmsafe.com
-DelegateAddress:delegate2@customer.cmsafe.com
+UserIdOrEmail:
+Password:
+ToAddress:
+FromAddress:
+DelegateAddress:
