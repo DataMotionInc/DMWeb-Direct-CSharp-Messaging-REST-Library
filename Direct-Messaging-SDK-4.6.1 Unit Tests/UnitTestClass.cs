@@ -156,7 +156,7 @@ namespace Messaging_Library.TestFixtures.UnitTestClass
                 catch (HttpRequestException ex)
                 {
                     //401 because no SessionKey
-                    Assert.IsTrue(ex.Message.Contains("400"));
+                    Assert.IsTrue(ex.Message.Contains("401"));
                 }
             }
 

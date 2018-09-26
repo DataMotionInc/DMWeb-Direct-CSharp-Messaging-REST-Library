@@ -152,10 +152,10 @@ namespace Messaging_Library.TestFixtures.UnitTestClass
             catch (WebException ex)
             {
                 //Call executes propery, but is false because OldPassword is not provided
-                Assert.IsTrue(ex.Message.Contains("400"));
+                Assert.IsTrue(ex.Message.Contains("401"));
             }
         }
-
+            
         [Test, Order(9)]
         [Category("LogOut")]
         [Category("No Session Key")]

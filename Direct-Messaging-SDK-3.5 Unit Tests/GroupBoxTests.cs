@@ -388,5 +388,11 @@ namespace Messaging_Library.TestFixtures.UnitTestClass
         {
             Context.Direct.GroupInbox.GetGroupInboxUnread("0");
         }
+
+        [OneTimeTearDown]
+        public void LogOut()
+        {
+            Context.Direct.Account.LogOut();
+        }
     }
 }
