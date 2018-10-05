@@ -13,7 +13,7 @@ namespace Messaging_Library.TestFixtures.UnitTestClass
     {
         public class Context
         {
-            public static DMWeb Direct = new DMWeb("https://directbeta.datamotion.com/SecureMessagingAPI");
+            public static DMWeb Direct = new DMWeb("https://ssl.dmhisp.com/SecureMessagingAPI");
             public static string folderId;
             public static string trackSentFID;
             public static int sendDeleteMID;
