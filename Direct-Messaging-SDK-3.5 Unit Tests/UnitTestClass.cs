@@ -547,7 +547,7 @@ namespace Messaging_Library.TestFixtures.UnitTestClass
             string[] linesplit4 = str4.Split(':');
             string fromAddress = linesplit4[1];
 
-            Context.mimeMessageId = Context.dmWeb.Message.SendMimeMessage("From: Delegate One <delegate1@customer.cmsafe.com>\r\nDate: Tue, 25 Sep 2018 16:53:16 -0400\r\nSubject: MIME Message Test\r\nMessage-Id: <24J3TDSOJ5U4.9POQ3IVXANX5@DellBlackTop>\r\nTo: \"delegate2@customer.cmsafe.com\" <delegate2@customer.cmsafe.com>\r\nCc: \r\nBcc: \r\nX-DateCreated: Tue, 25 Sep 2018 16:53:16 -0400\r\nMIME-Version: 1.0\r\nContent-Type: text/plain; charset=utf-8\r\n\r\nTest\r\n");
+            Context.mimeMessageId = Context.dmWeb.Message.SendMimeMessage("From: Delegate One <delegate1@unittests2.direct.dmhisp.com>\r\nDate: Fri, 05 Oct 2018 16:39:35 -0400\r\nSubject: MIME MEssage Test\r\nMessage-Id: <R1MIRRXQM5U4.2NWKIF8VDB752@DellBlackTop>\r\nTo: \"delegate2@unittests2.direct.dmhisp.com\"\r\n\t<delegate2@unittests2.direct.dmhisp.com>\r\nCc: \r\nBcc: \r\nX-DateCreated: Fri, 5 Oct 2018 16:39:35 -0400\r\nMIME-Version: 1.0\r\nContent-Type: text/plain; charset=utf-8\r\n\r\nTest\r\n");
         }
 
         [Test, Order(34)]
