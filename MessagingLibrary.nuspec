@@ -16,11 +16,9 @@
     <tags>datamotion data motion secure mail securemail direct phi ihe ehr hipaa ehnac soap rest restful administration account company provisioning messaging email</tags>
 	<dependencies>
 	<group targetFramework="net35">
-		<dependency id = "MimeKit" version="1.14.0" />
 		<dependency id = "Newtonsoft.Json" version="11.0.2" />
 	</group>
 	<group targetFramework="net461">
-		<dependency id = "MimeKit" version="1.14.0" />
 		<dependency id = "Newtonsoft.Json" version="11.0.2" />
 		<dependency id = "Microsoft.AspNet.WebApi.Client" version="5.2.6" />
 	</group>

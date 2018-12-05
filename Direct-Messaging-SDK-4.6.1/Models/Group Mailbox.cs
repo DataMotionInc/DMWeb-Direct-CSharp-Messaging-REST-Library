@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Direct_Messaging_SDK_461.Models
+﻿namespace DMWeb_REST.Models
 {
     public class Group_Mailbox
     {
@@ -57,7 +51,7 @@ namespace Direct_Messaging_SDK_461.Models
             public string FromAddress { get; set; }
             public string ToAddress { get; set; }
             public int Size { get; set; }
-            public int MessageStatus { get; set; }
+            public MessageStatusCodes MessageStatus { get; set; }
         }
 
         public class GetGroupMessageSummariesResponse

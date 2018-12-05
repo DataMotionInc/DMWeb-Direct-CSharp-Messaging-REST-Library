@@ -1,16 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
+﻿using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
-using System.Windows.Forms;
-using MimeKit;
 using Newtonsoft.Json;
-using Direct_Messaging_SDK_461.Models;
+using DMWeb_REST.Models;
 
-namespace Direct_Messaging_SDK_461
+namespace DMWeb_REST
 {
-    public class DM_DirectMessaging_461
+    public class DMWeb
     {
         public static string _baseUrl = "";
         public static string _sessionKey = "";
@@ -27,16 +23,16 @@ namespace Direct_Messaging_SDK_461
         /// <summary>
         /// Default constructor that sets the _baseUrl to SecureMail
         /// </summary>
-        public DM_DirectMessaging_461()
+        public DMWeb()
         {
-            _baseUrl = "https://directbeta.datamotion.com/SecureMessagingApi";
+            _baseUrl = "https://ssl.dmhisp.com/SecureMessagingAPI";
         }
 
         /// <summary>
         /// Non-default constructor that allows the host URL to be changed
         /// </summary>
         /// <param name="url">The string of the destination URL</param>
-        public DM_DirectMessaging_461(string url)
+        public DMWeb(string url)
         {
             _baseUrl = url;
         }
@@ -153,7 +149,7 @@ namespace Direct_Messaging_SDK_461
             /// Displays the details of a folder
             /// </summary>
             /// <returns>HttpResponseMessage deserialized into FolderResponses object</returns>
-            public async Task<Folders.Folder> List()
+            public async Task<Folders.ListFolders> List()
             {
                 HttpClient client = new HttpClient();
 
@@ -165,7 +161,7 @@ namespace Direct_Messaging_SDK_461
                     response.EnsureSuccessStatusCode();
                     string stringFolders = await response.Content.ReadAsStringAsync();
 
-                    Folders.Folder folderResponse = JsonConvert.DeserializeObject<Folders.Folder>(stringFolders);
+                    Folders.ListFolders folderResponse = JsonConvert.DeserializeObject<Folders.ListFolders>(stringFolders);
 
                     return folderResponse;
                 }
@@ -263,13 +259,13 @@ namespace Direct_Messaging_SDK_461
             {
                 HttpClient client = new HttpClient();
                 client.DefaultRequestHeaders.Add("X-Session-Key", _sessionKey);
-                
+
                 HttpResponseMessage response = await client.PutAsJsonAsync(_baseUrl + "/Folder/Delegates", model);
                 response.EnsureSuccessStatusCode();
                 string responseString = await response.Content.ReadAsStringAsync();
 
                 return responseString;
-            } 
+            }
 
             public async Task<string> DeleteDelegate(string delegateEmail)
             {
@@ -519,9 +515,9 @@ namespace Direct_Messaging_SDK_461
             /// <summary>
             /// Used to retract a message
             /// </summary>
-            /// <param name="model">Model contains string messageId</param>
+            /// <param name="messageId">The messageId of the message being retracted</param>
             /// <returns>HttpResponseMessage(null if successful) </returns>
-            public async Task<string> Retract(Messaging.MessageOperations model)
+            public async Task<string> Retract(string messageId)
             {
                 HttpClient client = new HttpClient();
 
@@ -529,8 +525,7 @@ namespace Direct_Messaging_SDK_461
 
                 try
                 {
-                    string messageId = model.MessageId.ToString();
-                    HttpResponseMessage response = await client.PostAsJsonAsync(_baseUrl + "/Message/" + messageId + "/Retract", model);
+                    HttpResponseMessage response = await client.PostAsJsonAsync(_baseUrl + "/Message/" + messageId + "/Retract", "");
                     response.EnsureSuccessStatusCode();
 
                     return await response.Content.ReadAsStringAsync();
@@ -544,9 +539,10 @@ namespace Direct_Messaging_SDK_461
             /// <summary>
             /// Used to move a message
             /// </summary>
-            /// <param name="model">Model contains string messageId</param>
+            /// <param name="model">MoveMessageRequest model</param>
+            /// <param name="messageId">The messageId being moved</param>
             /// <returns>HttpResponseMessage(null if successful)</returns>
-            public async Task<string> Move(Messaging.MessageOperations model)
+            public async Task<string> Move(Messaging.MoveMessageRequest model, string messageId)
             {
                 HttpClient client = new HttpClient();
 
@@ -554,8 +550,7 @@ namespace Direct_Messaging_SDK_461
 
                 try
                 {
-                    string messageId = model.MessageId.ToString();
-                    HttpResponseMessage response = await client.PostAsJsonAsync(_baseUrl + "/Message.svc/" + messageId + "/Move", model);
+                    HttpResponseMessage response = await client.PostAsJsonAsync(_baseUrl + "/Message/" + messageId + "/Move", model);
                     response.EnsureSuccessStatusCode();
 
                     return await response.Content.ReadAsStringAsync();
@@ -670,7 +665,7 @@ namespace Direct_Messaging_SDK_461
             /// </summary>
             /// <param name="messageId"></param>
             /// <returns>MimeMessageRequestandResponse object</returns>
-            public async Task<Messaging.MimeMessageRequestandResponse> GetaMimeMessage(string messageId)
+            public async Task<Messaging.GetMimeMessageResponse> GetaMimeMessage(string messageId)
             {
                 HttpClient client = new HttpClient();
                 client.DefaultRequestHeaders.Add("X-Session-Key", _sessionKey);
@@ -680,7 +675,7 @@ namespace Direct_Messaging_SDK_461
                     string mimeString = await response.Content.ReadAsStringAsync();
                     response.EnsureSuccessStatusCode();
 
-                    Messaging.MimeMessageRequestandResponse mimeMessage = JsonConvert.DeserializeObject<Messaging.MimeMessageRequestandResponse>(mimeString);
+                    Messaging.GetMimeMessageResponse mimeMessage = JsonConvert.DeserializeObject<Messaging.GetMimeMessageResponse>(mimeString);
 
                     return mimeMessage;
                 }
@@ -696,58 +691,21 @@ namespace Direct_Messaging_SDK_461
             /// <param name="model"></param>
             /// <param name="location"></param>
             /// <returns>Mime MessageID as a string</returns>
-            public async Task<string> SendMimeMessage(Messaging.SendMessage model, string location)
+            public async Task<string> SendMimeMessage(string messageString)
             {
                 HttpClient client = new HttpClient();
                 client.DefaultRequestHeaders.Add("X-Session-Key", _sessionKey);
 
-                var message = new MimeMessage();
+                Messaging.SendMimeMessageRequest mimeMessageObject = new Messaging.SendMimeMessageRequest();
+                mimeMessageObject.MimeMessage = messageString;
 
-                message.From.Add(new MailboxAddress(model.From));
-
-                foreach (string str in model.To)
-                {
-                    message.To.Add(new MailboxAddress(str));
-                }
-
-                foreach (string str in model.Cc)
-                {
-                    message.Cc.Add(new MailboxAddress(str));
-                }
-
-                foreach (string str in model.Bcc)
-                {
-                    message.Bcc.Add(new MailboxAddress(str));
-                }
-
-                message.Subject = model.Subject;
-                string messageString = model.TextBody;
-
-                var body = new TextPart("plain") { Text = @messageString };
-
-                var attachment = new MimePart("", "")
-                {
-                    ContentObject = new ContentObject(File.OpenRead(location), ContentEncoding.Default),
-                    ContentDisposition = new ContentDisposition(ContentDisposition.Attachment),
-                    ContentTransferEncoding = ContentEncoding.Base64,
-                    FileName = Path.GetFileName(location)
-                };
-
-                var multipart = new Multipart("mixed");
-                multipart.Add(body);
-                multipart.Add(attachment);
-
-                message.Body = multipart;
-
-                Messaging.MimeMessageRequestandResponse mimeMessageObject = new Messaging.MimeMessageRequestandResponse();
-                mimeMessageObject.MimeMessage = message.ToString();
                 try
                 {
                     HttpResponseMessage response = await client.PostAsJsonAsync(_baseUrl + "/Message/Mime", mimeMessageObject);
                     response.EnsureSuccessStatusCode();
                     string responseString = await response.Content.ReadAsStringAsync();
 
-                    Messaging.MimeMessageRequestandResponse mid = JsonConvert.DeserializeObject<Messaging.MimeMessageRequestandResponse>(responseString);
+                    Messaging.SendMimeMessageResponse mid = JsonConvert.DeserializeObject<Messaging.SendMimeMessageResponse>(responseString);
 
                     return mid.MessageId.ToString();
                 }
@@ -756,36 +714,6 @@ namespace Direct_Messaging_SDK_461
                     throw ex;
                 }
             }
-        }
-
-        /// <summary>
-        /// Used to convert a file to Base64 string
-        /// </summary>
-        /// <param name="location">string of file location</param>
-        /// <returns></returns>
-        public string ConvertToBase64(string location)
-        {
-            byte[] imageArray = System.IO.File.ReadAllBytes(location);
-            string _base64 = Convert.ToBase64String(imageArray);
-            return _base64;
-        }
-
-        /// <summary>
-        /// Used to convert base64 string into original file with choice of save location
-        /// </summary>
-        /// <param name="_base64">string base64</param>
-        /// <param name="FileName">string file name</param>
-        public void ConvertFromBase64(string _base64, string FileName)
-        {
-            byte[] imageBytes = Convert.FromBase64String(_base64);
-
-            SaveFileDialog dlg = new SaveFileDialog();
-            //string type = Path.GetExtension(dlg.FileName);
-            dlg.FileName = FileName;
-            dlg.ShowDialog();
-
-            System.IO.FileInfo location = new System.IO.FileInfo(dlg.FileName);
-            File.WriteAllBytes(location.ToString(), imageBytes);
         }
     }
 }

@@ -1,4 +1,4 @@
-﻿namespace Direct_Messaging_SDK_3._5.Models
+﻿namespace DMWeb_REST.Models
 {
     public class Group_Mailbox
     {
@@ -51,7 +51,7 @@
             public string FromAddress { get; set; }
             public string ToAddress { get; set; }
             public int Size { get; set; }
-            public int MessageStatus { get; set; }
+            public MessageStatusCodes MessageStatus { get; set; }
         }
 
         public class GetGroupMessageSummariesResponse
