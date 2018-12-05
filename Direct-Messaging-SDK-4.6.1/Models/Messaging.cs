@@ -1,11 +1,40 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
-namespace Direct_Messaging_SDK_461.Models
+namespace DMWeb_REST.Models
 {
+    public enum MessageStatusCodes
+    {
+        None,
+        DirectMessageFailed = -8,
+        PendingUpload = -7,
+        PendingLicense = -6,
+        Pending = -5,
+        Restricted = -4,
+        Deleted = -3,
+        Retracted = -2,
+        Draft = -1,
+        EditMode = 0,
+        NoticeInQueue = 1,
+        NoticeSent = 2,
+        UnRead = 3,
+        Read = 4,
+        SentSafeTls = 5,
+        NoticeError = 6,
+        Pop3Delivered = 7,
+        PushedZip = 8,
+        SecureFax = 9,
+        PushedPdf = 10,
+        DistributionRequestProcessed = 11,
+        DistributionRequestFailed = 12,
+        WorkflowDestinationEnroute = 13,
+        WorkflowDestinationDelievered = 14,
+        WorkflowDestinationUnreachable = 15,
+        DirectMessageQueued = 16,
+        DirectMessageSent = 17,
+        DirectMessageDispatched = 18,
+        DirectMessageProcessed = 19
+    };
+
     public class Messaging
     {
         /// <summary>
@@ -23,7 +52,7 @@ namespace Direct_Messaging_SDK_461.Models
         /// </summary>
         public class GetInboxMIDResponse
         {
-            public int[] MessageIds { get; set; }
+            public List<int> MessageIds = new List<int>();
         }
 
         /// <summary>
@@ -46,7 +75,7 @@ namespace Direct_Messaging_SDK_461.Models
             public int MessageId { get; set; }
             public int MessageSize { get; set; }
             public bool Read { get; set; }
-            public int MessageStatus { get; set; }
+            public MessageStatusCodes MessageStatus { get; set; }
             public string SenderAddress { get; set; }
             public string Subject { get; set; }
         }
@@ -57,7 +86,7 @@ namespace Direct_Messaging_SDK_461.Models
         public class GetMessageSummaries
         {
             public bool MoreMessagesAvailable { get; set; }
-            public SummariesAndUnreadMessage[] Summaries { get; set; }
+            public List<SummariesAndUnreadMessage> Summaries = new List<SummariesAndUnreadMessage>();
         }
 
         /// <summary>
@@ -66,7 +95,7 @@ namespace Direct_Messaging_SDK_461.Models
         public class GetUnreadMessages
         {
             public bool MoreMessagesAvailable { get; set; }
-            public SummariesAndUnreadMessage[] Summaries { get; set; }
+            public List<SummariesAndUnreadMessage> Summaries = new List<SummariesAndUnreadMessage>();
         }
         /// <summary>
         /// Structure for payload to search inbox
@@ -108,7 +137,7 @@ namespace Direct_Messaging_SDK_461.Models
             public int MessageStatusId { get; set; }
             public string PasswordHint { get; set; }
             public bool Read { get; set; }
-            public int MessageStatus { get; set; }
+            public MessageStatusCodes MessageStatus { get; set; }
             public bool ReadConfirmation { get; set; }
             public string SenderEmail { get; set; }
             public int SenderId { get; set; }
@@ -121,7 +150,7 @@ namespace Direct_Messaging_SDK_461.Models
         public class SearchInboxResponse
         {
             public PageDetails PageDetails { get; set; }
-            public Results[] Results { get; set; }
+            public List<Results> Results = new List<Results>();
         }
 
         public class MetadataSecurityEnvelope
@@ -144,7 +173,7 @@ namespace Direct_Messaging_SDK_461.Models
         }
         public class MetadataAttachmentTracking
         {
-            public Recipient[] Recipients { get; set; }
+            public List<Recipient> Recipients = new List<Recipient>();
         }
 
         public class MetadataAttachmentSize
@@ -165,17 +194,17 @@ namespace Direct_Messaging_SDK_461.Models
             public string DateOpened { get; set; }
             public string Email { get; set; }
             public string MessageStatusDescription { get; set; }
-            public int MessageStatus { get; set; }
+            public MessageStatusCodes MessageStatus { get; set; }
             public string ReceiverField { get; set; }
         }
         public class MetadataResponse
         {
-            public MetadataAttachment[] Attachments { get; set; }
+            public List<MetadataAttachment> Attachments = new List<MetadataAttachment>();
             public string ExpirationDate { get; set; }
             public int MessageId { get; set; }
             public int MessageSize { get; set; }
             public MetadataSecurityEnvelope SecurityEnvelope { get; set; }
-            public Tracking[] Tracking { get; set; }
+            public List<Tracking> Tracking = new List<Tracking>();
         }
 
         /// <summary>
@@ -232,25 +261,46 @@ namespace Direct_Messaging_SDK_461.Models
             public string HtmlBody { get; set; }
             public string TextBody { get; set; }
         }
+
         /// <summary>
-        /// Structure for moving, deleting, and retracting a message
+        /// Structure to move a message
         /// </summary>
-        public class MessageOperations
+        public class MoveMessageRequest
         {
-            public int MessageId { get; set; }
             public int DestinationFolderId { get; set; }
+        }
+
+        /// <summary>
+        /// Structure to delete a message
+        /// </summary>
+        public class DeleteMessageResponse
+        {
             public int NewFolderId { get; set; }
             public string Results { get; set; }
         }
 
-        public class MoveMessage
-        {
-            public int DestinationFolderId { get; set; }
-        }
-        public class MimeMessageRequestandResponse
+        /// <summary>
+        /// Structure to get a Mime message
+        /// </summary>
+        public class GetMimeMessageResponse
         {
             public string MimeMessage { get; set; }
-            public int MessageId { get; set; }
+        }
+
+        /// <summary>
+        /// Structure to send a Mime message
+        /// </summary>
+        public class SendMimeMessageRequest
+        {
+            public string MimeMessage { get; set; }
+        }
+
+        /// <summary>
+        /// Structure for the response body of sending a Mime message
+        /// </summary>
+        public class SendMimeMessageResponse
+        {
+            public string MessageId { get; set; }
         }
     }
 }

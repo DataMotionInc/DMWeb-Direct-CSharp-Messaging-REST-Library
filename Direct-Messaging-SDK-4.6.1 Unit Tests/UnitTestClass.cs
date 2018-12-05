@@ -1,20 +1,19 @@
-﻿using System;
-using System.Net.Http;
+﻿using System.Net.Http;
 using System.IO;
 using System.Threading;
 using System.Reflection;
 using NUnit.Framework;
-using Direct_Messaging_SDK_461;
-using Direct_Messaging_SDK_461.Models;
+using DMWeb_REST;
+using DMWeb_REST.Models;
 
-namespace Direct_Messaging_SDK_4._6._1_Unit_Tests
+namespace Messaging_Library.TestFixtures.UnitTestClass
 {
     [TestFixture]
     public class UnitTestClass
     {
         public class Context
         {
-            public static DM_DirectMessaging_461 Direct = new DM_DirectMessaging_461();
+            public static DMWeb Direct = new DMWeb("https://ssl.dmhisp.com/SecureMessagingAPI");
             public static string folderId;
             public static string trackSentFID;
             public static int sendDeleteMID;
@@ -157,7 +156,7 @@ namespace Direct_Messaging_SDK_4._6._1_Unit_Tests
                 catch (HttpRequestException ex)
                 {
                     //401 because no SessionKey
-                    Assert.IsTrue(ex.Message.Contains("400"));
+                    Assert.IsTrue(ex.Message.Contains("401"));
                 }
             }
 
@@ -329,7 +328,7 @@ namespace Direct_Messaging_SDK_4._6._1_Unit_Tests
 
                 try
                 {
-                    Context.Direct.Message.Move(new Messaging.MessageOperations { MessageId = MID, DestinationFolderId = DFID }).GetAwaiter().GetResult();
+                    Context.Direct.Message.Move(new Messaging.MoveMessageRequest { DestinationFolderId = DFID }, MID.ToString()).GetAwaiter().GetResult();
                 }
                 catch (HttpRequestException ex)
                 {
@@ -346,7 +345,7 @@ namespace Direct_Messaging_SDK_4._6._1_Unit_Tests
 
                 try
                 {
-                    Context.Direct.Message.Retract(new Messaging.MessageOperations { MessageId = MID }).GetAwaiter().GetResult();
+                    Context.Direct.Message.Retract(MID.ToString()).GetAwaiter().GetResult();
                 }
                 catch (HttpRequestException ex)
                 {
@@ -404,7 +403,7 @@ namespace Direct_Messaging_SDK_4._6._1_Unit_Tests
 
                 try
                 {
-                    Context.Direct.Message.SendMimeMessage(new Messaging.SendMessage { To = { toAddress }, From = fromAddress, Subject = "Mime Test 4.6.1 (Direct)", TextBody = "Mime Message Test" }, _testDataPath).GetAwaiter().GetResult();
+                    Context.Direct.Message.SendMimeMessage("From: Delegate One <delegate1@customer.cmsafe.com>\r\nDate: Tue, 25 Sep 2018 16:53:16 -0400\r\nSubject: MIME Message Test\r\nMessage-Id: <24J3TDSOJ5U4.9POQ3IVXANX5@DellBlackTop>\r\nTo: \"delegate2@customer.cmsafe.com\" <delegate2@customer.cmsafe.com>\r\nCc: \r\nBcc: \r\nX-DateCreated: Tue, 25 Sep 2018 16:53:16 -0400\r\nMIME-Version: 1.0\r\nContent-Type: text/plain; charset=utf-8\r\n\r\nTest\r\n").GetAwaiter().GetResult();
                 }
                 catch (HttpRequestException ex)
                 {
@@ -472,7 +471,7 @@ namespace Direct_Messaging_SDK_4._6._1_Unit_Tests
 
                 int DFID = int.Parse(Context.trackSentFID);
 
-                Context.Direct.Message.Move(new Messaging.MessageOperations { MessageId = Context.moveMID, DestinationFolderId = DFID }).GetAwaiter().GetResult();
+                Context.Direct.Message.Move(new Messaging.MoveMessageRequest { DestinationFolderId = DFID }, Context.moveMID.ToString()).GetAwaiter().GetResult();
             }
 
             [Test, Order(28)]
@@ -553,8 +552,7 @@ namespace Direct_Messaging_SDK_4._6._1_Unit_Tests
                 string[] linesplit4 = str4.Split(':');
                 string fromAddress = linesplit4[1];
 
-                //string location = @"Test Documents\test.txt");
-                Context.mimeMessageId = Context.Direct.Message.SendMimeMessage(new Messaging.SendMessage { To = { toAddress }, From = fromAddress, Subject = "Mime Test with SessionKey 4.6.1 (Direct)", TextBody = "Mime Message Test" }, _testDataPath).GetAwaiter().GetResult();
+                Context.mimeMessageId = Context.Direct.Message.SendMimeMessage("From: Delegate One <delegate1@unittests2.direct.dmhisp.com>\r\nDate: Fri, 05 Oct 2018 16:39:35 -0400\r\nSubject: MIME MEssage Test\r\nMessage-Id: <R1MIRRXQM5U4.2NWKIF8VDB752@DellBlackTop>\r\nTo: \"delegate2@unittests2.direct.dmhisp.com\"\r\n\t<delegate2@unittests2.direct.dmhisp.com>\r\nCc: \r\nBcc: \r\nX-DateCreated: Fri, 5 Oct 2018 16:39:35 -0400\r\nMIME-Version: 1.0\r\nContent-Type: text/plain; charset=utf-8\r\n\r\nTest\r\n").GetAwaiter().GetResult();
             }
 
             [Test, Order(34)]
@@ -966,7 +964,7 @@ namespace Direct_Messaging_SDK_4._6._1_Unit_Tests
 
                 try
                 {
-                    Context.Direct.Message.Move(new Messaging.MessageOperations { MessageId = MID }).GetAwaiter().GetResult();
+                    Context.Direct.Message.Move(new Messaging.MoveMessageRequest { DestinationFolderId = 0 }, MID.ToString()).GetAwaiter().GetResult();
                 }
                 catch (HttpRequestException ex)
                 {
@@ -982,7 +980,7 @@ namespace Direct_Messaging_SDK_4._6._1_Unit_Tests
 
                 try
                 {
-                    Context.Direct.Message.Move(new Messaging.MessageOperations { DestinationFolderId = DFID }).GetAwaiter().GetResult();
+                    Context.Direct.Message.Move(new Messaging.MoveMessageRequest { DestinationFolderId = DFID }, 0.ToString()).GetAwaiter().GetResult();
                 }
                 catch (HttpRequestException ex)
                 {
@@ -999,7 +997,7 @@ namespace Direct_Messaging_SDK_4._6._1_Unit_Tests
 
                 try
                 {
-                    Context.Direct.Message.Move(new Messaging.MessageOperations { MessageId = MID, DestinationFolderId = 15143 }).GetAwaiter().GetResult();
+                    Context.Direct.Message.Move(new Messaging.MoveMessageRequest { DestinationFolderId = 15143 }, MID.ToString()).GetAwaiter().GetResult();
                 }
                 catch (HttpRequestException ex)
                 {
@@ -1016,7 +1014,7 @@ namespace Direct_Messaging_SDK_4._6._1_Unit_Tests
 
                 try
                 {
-                    Context.Direct.Message.Move(new Messaging.MessageOperations { MessageId = MID, DestinationFolderId = DFID }).GetAwaiter().GetResult();
+                    Context.Direct.Message.Move(new Messaging.MoveMessageRequest { DestinationFolderId = DFID }, MID.ToString()).GetAwaiter().GetResult();
                 }
                 catch (HttpRequestException ex)
                 {
@@ -1033,7 +1031,7 @@ namespace Direct_Messaging_SDK_4._6._1_Unit_Tests
 
                 try
                 {
-                    Context.Direct.Message.Move(new Messaging.MessageOperations { MessageId = MID, DestinationFolderId = DFID }).GetAwaiter().GetResult();
+                    Context.Direct.Message.Move(new Messaging.MoveMessageRequest { DestinationFolderId = DFID }, MID.ToString()).GetAwaiter().GetResult();
                 }
                 catch (HttpRequestException ex)
                 {
@@ -1054,7 +1052,7 @@ namespace Direct_Messaging_SDK_4._6._1_Unit_Tests
 
                 int MID = Context.Direct.Message.Send(new Messaging.SendMessage { To = { toAddress }, Subject = "Retract Message Test 4.6.1 (Direct)" }).GetAwaiter().GetResult();
 
-                Context.Direct.Message.Retract(new Messaging.MessageOperations { MessageId = MID }).GetAwaiter().GetResult();
+                Context.Direct.Message.Retract(MID.ToString()).GetAwaiter().GetResult();
             }
 
             [Test]
@@ -1065,7 +1063,7 @@ namespace Direct_Messaging_SDK_4._6._1_Unit_Tests
 
                 try
                 {
-                    Context.Direct.Message.Retract(new Messaging.MessageOperations { MessageId = MID }).GetAwaiter().GetResult();
+                    Context.Direct.Message.Retract(MID.ToString()).GetAwaiter().GetResult();
                 }
                 catch (HttpRequestException ex)
                 {
@@ -1219,8 +1217,7 @@ namespace Direct_Messaging_SDK_4._6._1_Unit_Tests
                     string[] linesplit4 = str4.Split(':');
                     string fromAddress = linesplit4[1];
 
-                    //string location = @"Test Documents\test.txt");
-                    Context.Direct.Message.SendMimeMessage(new Messaging.SendMessage { From = fromAddress, Subject = "No To Address", TextBody = "Mime Message Test 4.6.1 (Direct)" }, _testDataPath).GetAwaiter().GetResult();
+                    Context.Direct.Message.SendMimeMessage("From: Delegate One <delegate1@customer.cmsafe.com>\r\nDate: Tue, 25 Sep 2018 16:54:48 -0400\r\nSubject: MIME Message Test\r\nMessage-Id: <3ECVXSSOJ5U4.8QLA3MWFPW1Q1@DellBlackTop>\r\nTo: \r\nCc: \r\nBcc: \r\nX-DateCreated: Tue, 25 Sep 2018 16:54:48 -0400\r\nMIME-Version: 1.0\r\nContent-Type: text/plain; charset=utf-8\r\n\r\nTest\r\n").GetAwaiter().GetResult();
                 }
                 catch (HttpRequestException ex)
                 {

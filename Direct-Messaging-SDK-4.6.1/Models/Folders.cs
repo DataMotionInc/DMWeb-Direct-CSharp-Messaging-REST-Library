@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
-namespace Direct_Messaging_SDK_461.Models
+namespace DMWeb_REST.Models
 {
     public class Folders
     {
@@ -22,20 +18,14 @@ namespace Direct_Messaging_SDK_461.Models
             public int TotalSize { get; set; }
         }
 
-        /// <summary>
-        /// Classes associated with folders
-        /// </summary>
-        public class Folder
-        {
-            /// <summary>
-            /// Create an array (Folders) of type Folder which has the data types of the payload being received
-            /// </summary>
-            public Create[] Folders { get; set; }
-        }
-
         public class FolderResponse
         {
             public int FolderId { get; set; }
+        }
+
+        public class ListFolders
+        {
+            public List<Create> Folders = new List<Create>();
         }
     }
 }

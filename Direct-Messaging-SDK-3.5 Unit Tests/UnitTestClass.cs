@@ -1,18 +1,16 @@
 ﻿using System.IO;
 using System.Threading;
 using System.Net;
-using System;
 using System.Reflection;
-using System.Diagnostics;
 using NUnit.Framework;
-using Direct_Messaging_SDK_3._5;
-using Direct_Messaging_SDK_3._5.Models;
+using DMWeb_REST;
+using DMWeb_REST.Models;
 
 namespace Messaging_Library.TestFixtures.UnitTestClass
 {
     public class Context
     {
-        public static Direct_Messaging_SDK_35 dmWeb = new Direct_Messaging_SDK_35();
+        public static DMWeb dmWeb = new DMWeb("https://ssl.dmhisp.com/SecureMessagingAPI");
         public static string folderId;
         public static string trackSentFID;
         public static int sendDeleteMID;
@@ -21,7 +19,6 @@ namespace Messaging_Library.TestFixtures.UnitTestClass
          
         public static string userName= "";
         public static string password = "";
-
     }
 
     [TestFixture]
@@ -155,10 +152,10 @@ namespace Messaging_Library.TestFixtures.UnitTestClass
             catch (WebException ex)
             {
                 //Call executes propery, but is false because OldPassword is not provided
-                Assert.IsTrue(ex.Message.Contains("400"));
+                Assert.IsTrue(ex.Message.Contains("401"));
             }
         }
-
+            
         [Test, Order(9)]
         [Category("LogOut")]
         [Category("No Session Key")]
@@ -327,7 +324,7 @@ namespace Messaging_Library.TestFixtures.UnitTestClass
 
             try
             {
-                Context.dmWeb.Message.Move(new Messaging.MessageOperations { MessageId = MID, DestinationFolderId = DFID });
+                Context.dmWeb.Message.Move(new Messaging.MoveMessageRequest { DestinationFolderId = DFID }, MID.ToString());
             }
             catch (WebException ex)
             {
@@ -344,7 +341,7 @@ namespace Messaging_Library.TestFixtures.UnitTestClass
 
             try
             {
-                Context.dmWeb.Message.Retract(new Messaging.MessageOperations { MessageId = MID });
+                Context.dmWeb.Message.Retract(MID.ToString());
             }
             catch (WebException ex)
             {
@@ -401,8 +398,7 @@ namespace Messaging_Library.TestFixtures.UnitTestClass
 
             try
             {
-                string location = _testDataPath;
-                Context.dmWeb.Message.SendMimeMessage(new Messaging.SendMessage { To = { toAddress }, From = fromAddress, Subject = "Mime Test 3.5", TextBody = "Mime Message Test" }, location);
+                Context.dmWeb.Message.SendMimeMessage("From: Delegate One <delegate1@customer.cmsafe.com>\r\nDate: Tue, 25 Sep 2018 16:53:16 -0400\r\nSubject: MIME Message Test\r\nMessage-Id: <24J3TDSOJ5U4.9POQ3IVXANX5@DellBlackTop>\r\nTo: \"delegate2@customer.cmsafe.com\" <delegate2@customer.cmsafe.com>\r\nCc: \r\nBcc: \r\nX-DateCreated: Tue, 25 Sep 2018 16:53:16 -0400\r\nMIME-Version: 1.0\r\nContent-Type: text/plain; charset=utf-8\r\n\r\nTest\r\n");
             }
             catch (WebException ex)
             {
@@ -501,7 +497,7 @@ namespace Messaging_Library.TestFixtures.UnitTestClass
 
             int DFID = int.Parse(Context.trackSentFID);
 
-            Context.dmWeb.Message.Move(new Messaging.MessageOperations { MessageId = Context.moveMID, DestinationFolderId = DFID });
+            Context.dmWeb.Message.Move(new Messaging.MoveMessageRequest { DestinationFolderId = DFID }, Context.moveMID.ToString());
         }
 
         [Test, Order(31)]
@@ -551,8 +547,7 @@ namespace Messaging_Library.TestFixtures.UnitTestClass
             string[] linesplit4 = str4.Split(':');
             string fromAddress = linesplit4[1];
 
-            string location = _testDataPath;
-            Context.mimeMessageId = Context.dmWeb.Message.SendMimeMessage(new Messaging.SendMessage { To = { toAddress }, From = fromAddress, Subject = "Mime Test with SessionKey 3.5", TextBody = "Mime Message Test" }, location);
+            Context.mimeMessageId = Context.dmWeb.Message.SendMimeMessage("From: Delegate One <delegate1@unittests2.direct.dmhisp.com>\r\nDate: Fri, 05 Oct 2018 16:39:35 -0400\r\nSubject: MIME MEssage Test\r\nMessage-Id: <R1MIRRXQM5U4.2NWKIF8VDB752@DellBlackTop>\r\nTo: \"delegate2@unittests2.direct.dmhisp.com\"\r\n\t<delegate2@unittests2.direct.dmhisp.com>\r\nCc: \r\nBcc: \r\nX-DateCreated: Fri, 5 Oct 2018 16:39:35 -0400\r\nMIME-Version: 1.0\r\nContent-Type: text/plain; charset=utf-8\r\n\r\nTest\r\n");
         }
 
         [Test, Order(34)]
@@ -964,7 +959,7 @@ namespace Messaging_Library.TestFixtures.UnitTestClass
 
             try
             {
-                Context.dmWeb.Message.Move(new Messaging.MessageOperations { MessageId = MID });
+                Context.dmWeb.Message.Move(new Messaging.MoveMessageRequest { DestinationFolderId = 0 }, MID.ToString());
             }
             catch (WebException ex)
             {
@@ -980,7 +975,7 @@ namespace Messaging_Library.TestFixtures.UnitTestClass
 
             try
             {
-                Context.dmWeb.Message.Move(new Messaging.MessageOperations { DestinationFolderId = DFID });
+                Context.dmWeb.Message.Move(new Messaging.MoveMessageRequest { DestinationFolderId = DFID }, 0.ToString());
             }
             catch (WebException ex)
             {
@@ -997,7 +992,7 @@ namespace Messaging_Library.TestFixtures.UnitTestClass
 
             try
             {
-                Context.dmWeb.Message.Move(new Messaging.MessageOperations { MessageId = MID, DestinationFolderId = 15143 });
+                Context.dmWeb.Message.Move(new Messaging.MoveMessageRequest { DestinationFolderId = 15143 }, MID.ToString());
             }
             catch (WebException ex)
             {
@@ -1014,7 +1009,7 @@ namespace Messaging_Library.TestFixtures.UnitTestClass
 
             try
             {
-                Context.dmWeb.Message.Move(new Messaging.MessageOperations { MessageId = MID, DestinationFolderId = DFID });
+                Context.dmWeb.Message.Move(new Messaging.MoveMessageRequest { DestinationFolderId = DFID }, MID.ToString());
             }
             catch (WebException ex)
             {
@@ -1031,7 +1026,7 @@ namespace Messaging_Library.TestFixtures.UnitTestClass
 
             try
             {
-                Context.dmWeb.Message.Move(new Messaging.MessageOperations { MessageId = MID, DestinationFolderId = DFID });
+                Context.dmWeb.Message.Move(new Messaging.MoveMessageRequest { DestinationFolderId = DFID }, MID.ToString());
             }
             catch (WebException ex)
             {
@@ -1052,7 +1047,7 @@ namespace Messaging_Library.TestFixtures.UnitTestClass
 
             int MID = Context.dmWeb.Message.Send(new Messaging.SendMessage { To = { toAddress }, Subject = "Retract Message Test 3.5" });
 
-            Context.dmWeb.Message.Retract(new Messaging.MessageOperations { MessageId = MID });
+            Context.dmWeb.Message.Retract(MID.ToString());
         }
 
         [Test]
@@ -1063,7 +1058,7 @@ namespace Messaging_Library.TestFixtures.UnitTestClass
 
             try
             {
-                Context.dmWeb.Message.Retract(new Messaging.MessageOperations { MessageId = MID });
+                Context.dmWeb.Message.Retract(MID.ToString());
             }
             catch (WebException ex)
             {
@@ -1218,8 +1213,7 @@ namespace Messaging_Library.TestFixtures.UnitTestClass
                 string[] linesplit4 = str4.Split(':');
                 string fromAddress = linesplit4[1];
 
-                string location = @_testDataPath;
-                Context.dmWeb.Message.SendMimeMessage(new Messaging.SendMessage { From = fromAddress, Subject = "No To Address", TextBody = "Mime Message Test 3.5" }, location);
+                Context.dmWeb.Message.SendMimeMessage("From: Delegate One <delegate1@customer.cmsafe.com>\r\nDate: Tue, 25 Sep 2018 16:54:48 -0400\r\nSubject: MIME Message Test\r\nMessage-Id: <3ECVXSSOJ5U4.8QLA3MWFPW1Q1@DellBlackTop>\r\nTo: \r\nCc: \r\nBcc: \r\nX-DateCreated: Tue, 25 Sep 2018 16:54:48 -0400\r\nMIME-Version: 1.0\r\nContent-Type: text/plain; charset=utf-8\r\n\r\nTest\r\n");
             }
             catch (WebException ex)
             {
