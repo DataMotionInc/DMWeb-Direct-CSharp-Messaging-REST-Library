@@ -3,6 +3,7 @@ using System.Net;
 using System.Text;
 using Newtonsoft.Json;
 using DMWeb_REST.Models;
+using System.Security.Authentication;
 
 namespace DMWeb_REST
 {
@@ -10,11 +11,11 @@ namespace DMWeb_REST
     /// Class functions
     /// </summary>
     public class DMWeb
-    { 
+    {
+        public static WebClient client = new WebClient();
         public static string _baseUrl = "";
         public static string _sessionKey = "";
         
-
         public Messaging.SendMessage sendMessagePayload = new Messaging.SendMessage();
         public List<string> _base64 = new List<string>();
 
@@ -23,6 +24,8 @@ namespace DMWeb_REST
         public DMMessage Message = new DMMessage();
         public DMGroupInbox GroupInbox = new DMGroupInbox();
 
+        public const SslProtocols _Tls12 = (SslProtocols)0x00000C00;
+        public const SecurityProtocolType Tls12 = (SecurityProtocolType)_Tls12;
 
         /// <summary>
         /// Default constructor that sets the _baseUrl to SecureMail
@@ -30,6 +33,7 @@ namespace DMWeb_REST
         public DMWeb()
         {
             _baseUrl = "https://ssl.dmhisp.com/SecureMessagingAPI";
+            ServicePointManager.SecurityProtocol = Tls12;
         }
 
         /// <summary>
@@ -39,6 +43,7 @@ namespace DMWeb_REST
         public DMWeb(string url)
         {
             _baseUrl = url;
+            ServicePointManager.SecurityProtocol = Tls12;
         }
         public class DMAccount
         {
@@ -52,7 +57,6 @@ namespace DMWeb_REST
                 string jsonString = JsonConvert.SerializeObject(model);
                 byte[] jsonByteArray = Encoding.UTF8.GetBytes(jsonString);
 
-                WebClient client = new WebClient();
                 client.Headers.Add("Content-Type", "application/json");
 
                 try
@@ -78,9 +82,7 @@ namespace DMWeb_REST
             /// <returns>HttpResponseMessage deserialized into AccountResponses object</returns>
             public Account.AccountDetails Details()
             {
-                WebClient client = new WebClient();
                 client.Headers.Add("Content-Type", "application/json");
-                client.Headers.Add("X-Session-Key", _sessionKey);
 
                 try
                 {
@@ -104,9 +106,7 @@ namespace DMWeb_REST
                 string jsonString = JsonConvert.SerializeObject(model);
                 byte[] jsonByteArray = Encoding.UTF8.GetBytes(jsonString);
 
-                WebClient client = new WebClient();
                 client.Headers.Add("Content-Type", "application/json");
-                client.Headers.Add("X-Session-Key", _sessionKey);
 
                 try
                 {
@@ -129,10 +129,7 @@ namespace DMWeb_REST
                 string jsonString = JsonConvert.SerializeObject("");
                 byte[] jsonByteArray = Encoding.UTF8.GetBytes(jsonString);
 
-                WebClient client = new WebClient();
-
                 client.Headers.Add("Content-Type", "application/json");
-                client.Headers.Add("X-Session-Key", _sessionKey);
 
                 try
                 {
@@ -157,9 +154,7 @@ namespace DMWeb_REST
             /// <returns>HttpResponseMessage deserialized into FolderResponses object</returns>
             public Folders.ListFolders List()
             {
-                WebClient client = new WebClient();
                 client.Headers.Add("Content-Type", "application/json");
-                client.Headers.Add("X-Session-Key", _sessionKey);
 
                 try
                 {
@@ -184,9 +179,7 @@ namespace DMWeb_REST
                 string jsonString = JsonConvert.SerializeObject(model);
                 byte[] jsonByteArray = Encoding.UTF8.GetBytes(jsonString);
 
-                WebClient client = new WebClient();
                 client.Headers.Add("Content-Type", "application/json");
-                client.Headers.Add("X-Session-Key", _sessionKey);
 
                 try
                 {
@@ -212,9 +205,7 @@ namespace DMWeb_REST
                 string jsonString = JsonConvert.SerializeObject("");
                 byte[] jsonByteArray = Encoding.UTF8.GetBytes(jsonString);
 
-                WebClient client = new WebClient();
                 client.Headers.Add("Content-Type", "application/json");
-                client.Headers.Add("X-Session-Key", _sessionKey);
 
                 try
                 {
@@ -233,9 +224,7 @@ namespace DMWeb_REST
         {
             public Group_Mailbox.ShowDelegatesResponse ShowDelegates()
             {
-                WebClient client = new WebClient();
                 client.Headers.Add("Content-Type", "application/json");
-                client.Headers.Add("X-Session-Key", _sessionKey);
 
                 string response = client.DownloadString(_baseUrl + "/Folder/Delegates");
                 Group_Mailbox.ShowDelegatesResponse delegatesObject = JsonConvert.DeserializeObject<Group_Mailbox.ShowDelegatesResponse>(response);
@@ -245,9 +234,7 @@ namespace DMWeb_REST
 
             public Group_Mailbox.ShowGroupBoxesResponse ShowGroupBoxes()
             {
-                WebClient client = new WebClient();
                 client.Headers.Add("Content-Type", "application/json");
-                client.Headers.Add("X-Session-Key", _sessionKey);
 
                 string response = client.DownloadString(_baseUrl + "/Folder/GroupBox");
 
@@ -261,9 +248,7 @@ namespace DMWeb_REST
                 string jsonString = JsonConvert.SerializeObject(model);
                 byte[] jsonByteArray = Encoding.UTF8.GetBytes(jsonString);
 
-                WebClient client = new WebClient();
                 client.Headers.Add("Content-Type", "application/json");
-                client.Headers.Add("X-Session-Key", _sessionKey);
 
                 string response = Encoding.UTF8.GetString(client.UploadData(_baseUrl + "/Folder/Delegates", "PUT", jsonByteArray));
 
@@ -275,9 +260,7 @@ namespace DMWeb_REST
                 string jsonString = JsonConvert.SerializeObject("");
                 byte[] jsonByteArray = Encoding.UTF8.GetBytes(jsonString);
 
-                WebClient client = new WebClient();
                 client.Headers.Add("Content-Type", "application/json");
-                client.Headers.Add("X-Session-Key", _sessionKey);
 
                 string response = Encoding.UTF8.GetString(client.UploadData(_baseUrl + "/Folder/" + delegateEmail + "/Delegates", "DELETE", jsonByteArray));
 
@@ -289,9 +272,7 @@ namespace DMWeb_REST
                 string jsonString = JsonConvert.SerializeObject(model);
                 byte[] jsonByteArray = Encoding.UTF8.GetBytes(jsonString);
 
-                WebClient client = new WebClient();
                 client.Headers.Add("Content-Type", "application/json");
-                client.Headers.Add("X-Session-Key", _sessionKey);
 
                 string response = Encoding.UTF8.GetString(client.UploadData(_baseUrl + "/Message/GetGroupInboxMessageIds", "POST", jsonByteArray));
 
@@ -306,9 +287,7 @@ namespace DMWeb_REST
                 string jsonString = JsonConvert.SerializeObject(model);
                 byte[] jsonByteArray = Encoding.UTF8.GetBytes(jsonString);
 
-                WebClient client = new WebClient();
                 client.Headers.Add("Content-Type", "application/json");
-                client.Headers.Add("X-Session-Key", _sessionKey);
 
                 string response = Encoding.UTF8.GetString(client.UploadData(_baseUrl + "/Message/GetGroupMessageSummaries", "POST", jsonByteArray));
 
@@ -319,9 +298,7 @@ namespace DMWeb_REST
 
             public Group_Mailbox.GroupInboxResponse GroupInbox(string mid)
             {
-                WebClient client = new WebClient();
                 client.Headers.Add("Content-Type", "application/json");
-                client.Headers.Add("X-Session-Key", _sessionKey);
 
                 if (mid != "")
                 {
@@ -343,10 +320,7 @@ namespace DMWeb_REST
 
             public Group_Mailbox.GetGroupInboxUnreadResponse GetGroupInboxUnread(string mid)
             {
-                WebClient client = new WebClient();
                 client.Headers.Add("Content-Type", "application/json");
-                client.Headers.Add("X-Session-Key", _sessionKey);
-
 
                 if (mid != "")
                 {
@@ -379,9 +353,7 @@ namespace DMWeb_REST
                 string jsonString = JsonConvert.SerializeObject(model);
                 byte[] jsonByteArray = Encoding.UTF8.GetBytes(jsonString);
 
-                WebClient client = new WebClient();
                 client.Headers.Add("Content-Type", "application/json");
-                client.Headers.Add("X-Session-Key", _sessionKey);
 
                 try
                 {
@@ -407,9 +379,7 @@ namespace DMWeb_REST
                 string jsonString = JsonConvert.SerializeObject(model);
                 byte[] jsonByteArray = Encoding.UTF8.GetBytes(jsonString);
 
-                WebClient client = new WebClient();
                 client.Headers.Add("Content-Type", "application/json");
-                client.Headers.Add("X-Session-Key", _sessionKey);
 
                 try
                 {
@@ -433,9 +403,7 @@ namespace DMWeb_REST
             /// <returns>GetMessageSummariesResponse object</returns>
             public Messaging.GetUnreadMessages GetUnreadMessages(bool LastMIDReceived, string MID)
             {
-                WebClient client = new WebClient();
                 client.Headers.Add("Content-Type", "application/json");
-                client.Headers.Add("X-Session-Key", _sessionKey);
 
 
                 if (LastMIDReceived == false)
@@ -480,9 +448,7 @@ namespace DMWeb_REST
                 string jsonString = JsonConvert.SerializeObject(model);
                 byte[] jsonByteArray = Encoding.UTF8.GetBytes(jsonString);
 
-                WebClient client = new WebClient();
                 client.Headers.Add("Content-Type", "application/json");
-                client.Headers.Add("X-Session-Key", _sessionKey);
 
                 try
                 {
@@ -505,9 +471,7 @@ namespace DMWeb_REST
             /// <returns>MetadataResponse object</returns>
             public Messaging.MetadataResponse GetMessageMetadata(string MessageId)
             {
-                WebClient client = new WebClient();
                 client.Headers.Add("Content-Type", "application/json");
-                client.Headers.Add("X-Session-Key", _sessionKey);
                 
                 try
                 {
@@ -533,9 +497,7 @@ namespace DMWeb_REST
                 string jsonString = JsonConvert.SerializeObject("");
                 byte[] jsonByteArray = Encoding.UTF8.GetBytes(jsonString);
 
-                WebClient client = new WebClient();
                 client.Headers.Add("Content-Type", "application/json");
-                client.Headers.Add("X-Session-Key", _sessionKey);
 
                 try
                 {
@@ -559,9 +521,7 @@ namespace DMWeb_REST
                 string jsonString = JsonConvert.SerializeObject(model);
                 byte[] jsonByteArray = Encoding.UTF8.GetBytes(jsonString);
 
-                WebClient client = new WebClient();
                 client.Headers.Add("Content-Type", "application/json");
-                client.Headers.Add("X-Session-Key", _sessionKey);
 
                 try
                 {
@@ -585,9 +545,7 @@ namespace DMWeb_REST
                 string jsonString = JsonConvert.SerializeObject(model);
                 byte[] jsonByteArray = Encoding.UTF8.GetBytes(jsonString);
 
-                WebClient client = new WebClient();
                 client.Headers.Add("Content-Type", "application/json");
-                client.Headers.Add("X-Session-Key", _sessionKey);
 
                 try
                 {
@@ -614,11 +572,8 @@ namespace DMWeb_REST
                 string jsonString = JsonConvert.SerializeObject("");
                 byte[] jsonByteArray = Encoding.UTF8.GetBytes(jsonString);
 
-                WebClient client = new WebClient();
                 client.Headers.Add("Content-Type", "application/json");
-                client.Headers.Add("X-Session-Key", _sessionKey);
 
-                //Messaging.MessageOperations model
                 string messageId = mid;
                 if (permanentlyDeleteCheck == true)
                 {
@@ -655,9 +610,7 @@ namespace DMWeb_REST
             /// <returns>GetMessage object</returns>
             public Messaging.GetMessage Get(string messageID)
             {
-                WebClient client = new WebClient();
                 client.Headers.Add("Content-Type", "application/json");
-                client.Headers.Add("X-Session-Key", _sessionKey);
 
                 try
                 {
@@ -680,9 +633,7 @@ namespace DMWeb_REST
             /// <returns>MimeMessageRequestandResponse object</returns>
             public Messaging.GetMimeMessageResponse GetaMimeMessage(string messageId)
             {
-                WebClient client = new WebClient();
                 client.Headers.Add("Content-Type", "application/json");
-                client.Headers.Add("X-Session-Key", _sessionKey);
 
                 try
                 {
@@ -705,9 +656,7 @@ namespace DMWeb_REST
             /// <returns>Mime MessageID as a string</returns>
             public string SendMimeMessage(string mimeString)
             {
-                WebClient client = new WebClient();
                 client.Headers.Add("Content-Type", "application/json");
-                client.Headers.Add("X-Session-Key", _sessionKey);
 
                 Messaging.SendMimeMessageRequest mimeMessageObject = new Messaging.SendMimeMessageRequest();
                 mimeMessageObject.MimeMessage = mimeString;

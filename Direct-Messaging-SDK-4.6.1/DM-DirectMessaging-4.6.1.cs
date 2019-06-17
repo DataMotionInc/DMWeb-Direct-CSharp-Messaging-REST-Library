@@ -3,11 +3,13 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using DMWeb_REST.Models;
+using System.Net;
 
 namespace DMWeb_REST
 {
     public class DMWeb
     {
+        public static HttpClient client = new HttpClient();
         public static string _baseUrl = "";
         public static string _sessionKey = "";
 
@@ -26,6 +28,7 @@ namespace DMWeb_REST
         public DMWeb()
         {
             _baseUrl = "https://ssl.dmhisp.com/SecureMessagingAPI";
+            ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls12;
         }
 
         /// <summary>
@@ -35,6 +38,7 @@ namespace DMWeb_REST
         public DMWeb(string url)
         {
             _baseUrl = url;
+            ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls12;
         }
         public class DMAccount
         {
@@ -45,8 +49,6 @@ namespace DMWeb_REST
             /// <returns>HttpResponseMessage deserialized into AccountSessionKey object</returns>
             public async Task<string> LogOn(Account.LogOn model)
             {
-                HttpClient client = new HttpClient();
-
                 try
                 {
                     HttpResponseMessage response = await client.PostAsJsonAsync(_baseUrl + "/Account/Logon", model);
@@ -72,10 +74,6 @@ namespace DMWeb_REST
             /// <returns>HttpResponseMessage deserialized into AccountResponses object</returns>
             public async Task<Account.AccountDetails> Details()
             {
-                HttpClient client = new HttpClient();
-
-                client.DefaultRequestHeaders.Add("X-Session-Key", _sessionKey);
-
                 string details = "";
 
                 try
@@ -88,9 +86,8 @@ namespace DMWeb_REST
                 }
                 catch (HttpRequestException ex)
                 {
-                    string errorMsg = JsonConvert.DeserializeObject<string>(details);
+                    //string errorMsg = JsonConvert.DeserializeObject<string>(details);
                     throw ex;
-
                 }
             }
 
@@ -101,10 +98,6 @@ namespace DMWeb_REST
             /// <returns>HttpResponseMessage</returns>
             public async Task<string> ChangePassword(Account.ChangePassword model)
             {
-                HttpClient client = new HttpClient();
-
-                client.DefaultRequestHeaders.Add("X-Session-Key", _sessionKey);
-
                 try
                 {
                     HttpResponseMessage response = await client.PostAsJsonAsync(_baseUrl + "/Account/ChangePassword", model);
@@ -123,10 +116,6 @@ namespace DMWeb_REST
             /// <returns>HttpResponseMessage</returns>
             public async Task<string> LogOut()
             {
-                HttpClient client = new HttpClient();
-
-                client.DefaultRequestHeaders.Add("X-Session-Key", _sessionKey);
-
                 try
                 {
                     HttpResponseMessage response = await client.PostAsJsonAsync(_baseUrl + "/Account/Logout", "");
@@ -151,10 +140,6 @@ namespace DMWeb_REST
             /// <returns>HttpResponseMessage deserialized into FolderResponses object</returns>
             public async Task<Folders.ListFolders> List()
             {
-                HttpClient client = new HttpClient();
-
-                client.DefaultRequestHeaders.Add("X-Session-Key", _sessionKey);
-
                 try
                 {
                     HttpResponseMessage response = await client.GetAsync(_baseUrl + "/Folder/List");
@@ -178,10 +163,6 @@ namespace DMWeb_REST
             /// <returns>FolderID as a string</returns>
             public async Task<string> Create(Folders.Create model)
             {
-                HttpClient client = new HttpClient();
-
-                client.DefaultRequestHeaders.Add("X-Session-Key", _sessionKey);
-
                 try
                 {
                     HttpResponseMessage response = await client.PostAsJsonAsync(_baseUrl + "/Folder/", model);
@@ -207,10 +188,6 @@ namespace DMWeb_REST
             /// <returns>HttpResponseMessage</returns>
             public async Task<string> Delete(string FolderID)
             {
-                HttpClient client = new HttpClient();
-
-                client.DefaultRequestHeaders.Add("X-Session-Key", _sessionKey);
-
                 try
                 {
                     HttpResponseMessage response = await client.DeleteAsync(_baseUrl + "/Folder/" + FolderID);
@@ -229,9 +206,6 @@ namespace DMWeb_REST
         {
             public async Task<Group_Mailbox.ShowDelegatesResponse> ShowDelegates()
             {
-                HttpClient client = new HttpClient();
-                client.DefaultRequestHeaders.Add("X-Session-Key", _sessionKey);
-
                 HttpResponseMessage response = await client.GetAsync(_baseUrl + "/Folder/Delegates");
                 response.EnsureSuccessStatusCode();
                 string responseString = await response.Content.ReadAsStringAsync();
@@ -243,9 +217,6 @@ namespace DMWeb_REST
 
             public async Task<Group_Mailbox.ShowGroupBoxesResponse> ShowGroupBoxes()
             {
-                HttpClient client = new HttpClient();
-                client.DefaultRequestHeaders.Add("X-Session-Key", _sessionKey);
-
                 HttpResponseMessage response = await client.GetAsync(_baseUrl + "/Folder/GroupBox");
                 response.EnsureSuccessStatusCode();
                 string responseString = await response.Content.ReadAsStringAsync();
@@ -257,9 +228,6 @@ namespace DMWeb_REST
 
             public async Task<string> AddDelegate(Group_Mailbox.AddDelegateRequest model)
             {
-                HttpClient client = new HttpClient();
-                client.DefaultRequestHeaders.Add("X-Session-Key", _sessionKey);
-
                 HttpResponseMessage response = await client.PutAsJsonAsync(_baseUrl + "/Folder/Delegates", model);
                 response.EnsureSuccessStatusCode();
                 string responseString = await response.Content.ReadAsStringAsync();
@@ -269,9 +237,6 @@ namespace DMWeb_REST
 
             public async Task<string> DeleteDelegate(string delegateEmail)
             {
-                HttpClient client = new HttpClient();
-                client.DefaultRequestHeaders.Add("X-Session-Key", _sessionKey);
-
                 HttpResponseMessage response = await client.DeleteAsync(_baseUrl + "/Folder/" + delegateEmail + "/Delegates");
                 response.EnsureSuccessStatusCode();
                 string responseString = await response.Content.ReadAsStringAsync();
@@ -281,9 +246,6 @@ namespace DMWeb_REST
 
             public async Task<Group_Mailbox.GetGroupInboxMIDsResponse> GetGroupInboxMessageIds(Group_Mailbox.GetGroupInboxMIDsRequest model)
             {
-                HttpClient client = new HttpClient();
-                client.DefaultRequestHeaders.Add("X-Session-Key", _sessionKey);
-
                 HttpResponseMessage response = await client.PostAsJsonAsync(_baseUrl + "/Message/GetGroupInboxMessageIds", model);
                 response.EnsureSuccessStatusCode();
                 string responseString = await response.Content.ReadAsStringAsync();
@@ -295,9 +257,6 @@ namespace DMWeb_REST
 
             public async Task<Group_Mailbox.GetGroupMessageSummariesResponse> GetGroupMessageSummaries(Group_Mailbox.GetGroupMessageSummariesRequest model)
             {
-                HttpClient client = new HttpClient();
-                client.DefaultRequestHeaders.Add("X-Session-Key", _sessionKey);
-
                 HttpResponseMessage response = await client.PostAsJsonAsync(_baseUrl + "/Message/GetGroupMessageSummaries", model);
                 response.EnsureSuccessStatusCode();
                 string responseString = await response.Content.ReadAsStringAsync();
@@ -309,9 +268,6 @@ namespace DMWeb_REST
 
             public async Task<Group_Mailbox.GroupInboxResponse> GroupInbox(string mid)
             {
-                HttpClient client = new HttpClient();
-                client.DefaultRequestHeaders.Add("X-Session-Key", _sessionKey);
-
                 if (mid != "")
                 {
                     HttpResponseMessage response = await client.GetAsync(_baseUrl + "/Message/GroupInbox?After=" + mid);
@@ -336,9 +292,6 @@ namespace DMWeb_REST
 
             public async Task<Group_Mailbox.GetGroupInboxUnreadResponse> GetGroupInboxUnread(string mid)
             {
-                HttpClient client = new HttpClient();
-                client.DefaultRequestHeaders.Add("X-Session-Key", _sessionKey);
-
                 if (mid != "")
                 {
                     HttpResponseMessage response = await client.GetAsync(_baseUrl + "/Message/GroupInbox/Unread?After=" + mid);
@@ -370,8 +323,6 @@ namespace DMWeb_REST
             /// <returns>GetInboxMIDResponse object</returns>
             public async Task<Messaging.GetInboxMIDResponse> GetInboxMessageIds(Messaging.GetInboxMIDRequest model)
             {
-                HttpClient client = new HttpClient();
-                client.DefaultRequestHeaders.Add("X-Session-Key", _sessionKey);
                 try
                 {
                     HttpResponseMessage response = await client.PostAsJsonAsync(_baseUrl + "/Message/GetInboxMessageIds", model);
@@ -395,10 +346,6 @@ namespace DMWeb_REST
             /// <returns>HttpResponseMessage deserialized into SummariesResponseBody object</returns>
             public async Task<Messaging.GetMessageSummaries> GetMessageSummaries(Messaging.GetMessageSummariesRequest model)
             {
-                HttpClient client = new HttpClient();
-
-                client.DefaultRequestHeaders.Add("X-Session-Key", _sessionKey);
-
                 try
                 {
                     HttpResponseMessage response = await client.PostAsJsonAsync(_baseUrl + "/Message/GetMessageSummaries", model);
@@ -423,9 +370,6 @@ namespace DMWeb_REST
             /// <returns>GetMessageSummariesResponse object</returns>
             public async Task<Messaging.GetUnreadMessages> GetUnreadMessages(bool LastMIDReceived, string MID)
             {
-                HttpClient client = new HttpClient();
-                client.DefaultRequestHeaders.Add("X-Session-Key", _sessionKey);
-
                 if (LastMIDReceived == false)
                 {
                     try
@@ -467,9 +411,6 @@ namespace DMWeb_REST
             /// <returns>searchInboxResponse object</returns>
             public async Task<Messaging.SearchInboxResponse> SearchInbox(Messaging.SearchInbox model)
             {
-                HttpClient client = new HttpClient();
-                client.DefaultRequestHeaders.Add("X-Session-Key", _sessionKey);
-
                 try
                 {
                     HttpResponseMessage response = await client.PostAsJsonAsync(_baseUrl + "/Message/Inbox/Search", model);
@@ -493,9 +434,6 @@ namespace DMWeb_REST
             /// <returns>MetadataResponse object</returns>
             public async Task<Messaging.MetadataResponse> GetMessageMetadata(string MessageId)
             {
-                HttpClient client = new HttpClient();
-                client.DefaultRequestHeaders.Add("X-Session-Key", _sessionKey);
-
                 try
                 {
                     HttpResponseMessage response = await client.GetAsync(_baseUrl + "/Message/" + MessageId + "/Metadata");
@@ -519,10 +457,6 @@ namespace DMWeb_REST
             /// <returns>HttpResponseMessage(null if successful) </returns>
             public async Task<string> Retract(string messageId)
             {
-                HttpClient client = new HttpClient();
-
-                client.DefaultRequestHeaders.Add("X-Session-Key", _sessionKey);
-
                 try
                 {
                     HttpResponseMessage response = await client.PostAsJsonAsync(_baseUrl + "/Message/" + messageId + "/Retract", "");
@@ -544,10 +478,6 @@ namespace DMWeb_REST
             /// <returns>HttpResponseMessage(null if successful)</returns>
             public async Task<string> Move(Messaging.MoveMessageRequest model, string messageId)
             {
-                HttpClient client = new HttpClient();
-
-                client.DefaultRequestHeaders.Add("X-Session-Key", _sessionKey);
-
                 try
                 {
                     HttpResponseMessage response = await client.PostAsJsonAsync(_baseUrl + "/Message/" + messageId + "/Move", model);
@@ -568,10 +498,6 @@ namespace DMWeb_REST
             /// <returns>MessageID as an integer</returns>
             public async Task<int> Send(Messaging.SendMessage model)
             {
-                HttpClient client = new HttpClient();
-
-                client.DefaultRequestHeaders.Add("X-Session-Key", _sessionKey);
-
                 try
                 {
                     HttpResponseMessage response = await client.PostAsJsonAsync(_baseUrl + "/Message/", model);
@@ -597,11 +523,6 @@ namespace DMWeb_REST
             /// <returns>HttpResponseMessage</returns>
             public async Task<string> Delete(string mid, bool permanentlyDeleteCheck)
             {
-                //Messaging.MessageOperations model
-                HttpClient client = new HttpClient();
-
-                client.DefaultRequestHeaders.Add("X-Session-Key", _sessionKey);
-
                 string messageId = mid;
                 if (permanentlyDeleteCheck == true)
                 {
@@ -640,10 +561,6 @@ namespace DMWeb_REST
             /// <returns>GetMessage object</returns>
             public async Task<Messaging.GetMessage> Get(string messageID)
             {
-                HttpClient client = new HttpClient();
-
-                client.DefaultRequestHeaders.Add("X-Session-Key", _sessionKey);
-
                 try
                 {
                     HttpResponseMessage response = await client.GetAsync(_baseUrl + "/Message.svc/" + messageID);
@@ -667,8 +584,6 @@ namespace DMWeb_REST
             /// <returns>MimeMessageRequestandResponse object</returns>
             public async Task<Messaging.GetMimeMessageResponse> GetaMimeMessage(string messageId)
             {
-                HttpClient client = new HttpClient();
-                client.DefaultRequestHeaders.Add("X-Session-Key", _sessionKey);
                 try
                 {
                     HttpResponseMessage response = await client.GetAsync(_baseUrl + "/Message/" + messageId + "/Mime");
@@ -693,9 +608,6 @@ namespace DMWeb_REST
             /// <returns>Mime MessageID as a string</returns>
             public async Task<string> SendMimeMessage(string messageString)
             {
-                HttpClient client = new HttpClient();
-                client.DefaultRequestHeaders.Add("X-Session-Key", _sessionKey);
-
                 Messaging.SendMimeMessageRequest mimeMessageObject = new Messaging.SendMimeMessageRequest();
                 mimeMessageObject.MimeMessage = messageString;
 
