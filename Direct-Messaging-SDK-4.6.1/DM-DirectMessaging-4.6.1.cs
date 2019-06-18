@@ -21,7 +21,6 @@ namespace DMWeb_REST
         public DMMessage Message = new DMMessage();
         public DMGroupInbox GroupInbox = new DMGroupInbox();
 
-
         /// <summary>
         /// Default constructor that sets the _baseUrl to SecureMail
         /// </summary>
@@ -51,6 +50,8 @@ namespace DMWeb_REST
             {
                 try
                 {
+                    client.DefaultRequestHeaders.Remove("X-Session-Key");
+
                     HttpResponseMessage response = await client.PostAsJsonAsync(_baseUrl + "/Account/Logon", model);
                     response.EnsureSuccessStatusCode();
                     _sessionKey = await response.Content.ReadAsStringAsync();

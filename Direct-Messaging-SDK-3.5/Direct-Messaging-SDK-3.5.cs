@@ -58,6 +58,7 @@ namespace DMWeb_REST
                 byte[] jsonByteArray = Encoding.UTF8.GetBytes(jsonString);
 
                 client.Headers.Add("Content-Type", "application/json");
+                client.Headers.Remove("X-Session-Key");
 
                 try
                 {
